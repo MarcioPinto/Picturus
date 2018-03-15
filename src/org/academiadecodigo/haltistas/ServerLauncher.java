@@ -1,7 +1,6 @@
 package org.academiadecodigo.haltistas;
 
 import org.academiadecodigo.haltistas.Server.Server;
-
 import java.io.IOException;
 
 public class ServerLauncher {
@@ -18,7 +17,7 @@ public class ServerLauncher {
         try {
             Server server = new Server(port);
             server.start();
-            
+
         } catch (IOException e) {
             e.printStackTrace();
         }
