@@ -41,7 +41,7 @@ public class Server {
 
     private void broadcast() {
         for (VerySpecialHandler s : clientList) {
-        
+            s.writeMessage(message);
 
         }
     }
@@ -60,6 +60,19 @@ public class Server {
         @Override
         public void run() {
 
+        }
+
+        void stop(){
+            try{
+                clientList.remove(this);
+                connection.close();
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+
+        void writeMessage(String message){
+            toClients.println(message);
         }
     }
 
