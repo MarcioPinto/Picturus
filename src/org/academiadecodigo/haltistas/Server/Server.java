@@ -2,6 +2,7 @@ package org.academiadecodigo.haltistas.Server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -27,7 +28,7 @@ public class Server {
 
         ExecutorService service = Executors.newCachedThreadPool();
 
-        while(true){
+        while (true) {
 
             Socket clientSocket = serverSocket.accept();
             VerySpecialHandler handler = new VerySpecialHandler(clientSocket);
@@ -39,7 +40,7 @@ public class Server {
     }
 
 
-    private void broadcast() {
+    private void broadcast(String message) {
         for (VerySpecialHandler s : clientList) {
             s.writeMessage(message);
 
@@ -60,18 +61,33 @@ public class Server {
         @Override
         public void run() {
 
-        }
+            try {
 
-        void stop(){
-            try{
-                clientList.remove(this);
-                connection.close();
-            }catch (IOException e){
+                fromClients = new BufferedReader(
+                        new InputStreamReader(connection.getInputStream()));
+                toClients = new PrintWriter(connection.getOutputStream(), true);
+
+                String message = fromClients.readLine();
+                broadcast(message);
+
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
-        void writeMessage(String message){
+
+        void stop() {
+
+            try {
+                clientList.remove(this);
+                connection.close();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        void writeMessage(String message) {
             toClients.println(message);
         }
     }
