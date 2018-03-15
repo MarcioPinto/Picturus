@@ -67,11 +67,21 @@ public class Server {
                         new InputStreamReader(connection.getInputStream()));
                 toClients = new PrintWriter(connection.getOutputStream(), true);
 
-                String message = fromClients.readLine();
-                broadcast(message);
+                while (true) {
+                    String message = fromClients.readLine();
+
+                    if (message.split(" ")[1].equalsIgnoreCase("/quit")) {
+                        System.err.println("CLIENT DISCONNECTED");
+                        break;
+                    }
+                    broadcast(message);
+                }
 
             } catch (IOException e) {
                 e.printStackTrace();
+
+            } finally {
+                stop();
             }
         }
 
