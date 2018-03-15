@@ -1,6 +1,5 @@
-package org.academiadecodigo.haltistas;
+package org.academiadecodigo.haltistas.picturus.server;
 
-import org.academiadecodigo.haltistas.Server.ClientHandler;
 import java.util.HashSet;
 import java.util.Set;
 

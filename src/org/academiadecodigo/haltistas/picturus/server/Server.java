@@ -1,6 +1,4 @@
-package org.academiadecodigo.haltistas.Server;
-
-import org.academiadecodigo.haltistas.GameLogic;
+package org.academiadecodigo.haltistas.picturus.server;
 
 import java.io.IOException;
 import java.net.ServerSocket;

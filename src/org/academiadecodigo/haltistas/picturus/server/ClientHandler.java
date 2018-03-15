@@ -1,6 +1,5 @@
-package org.academiadecodigo.haltistas.Server;
+package org.academiadecodigo.haltistas.picturus.server;
 
-import org.academiadecodigo.haltistas.GameLogic;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
