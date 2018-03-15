@@ -68,12 +68,16 @@ public class Server {
                 toClients = new PrintWriter(connection.getOutputStream(), true);
 
                 while (true) {
-                    String message = fromClients.readLine();
 
-                    if (message.split(" ")[1].equalsIgnoreCase("/quit")) {
+                    String message = fromClients.readLine();
+                    System.err.println("MESSAGE: " + message);
+
+                    if (message.equalsIgnoreCase("/quit")) {
                         System.err.println("CLIENT DISCONNECTED");
+                        broadcast("Player disconnected.");
                         break;
                     }
+
                     broadcast(message);
                 }
 
@@ -97,9 +101,11 @@ public class Server {
             }
         }
 
+
         void writeMessage(String message) {
             toClients.println(message);
         }
+
     }
 
 }
