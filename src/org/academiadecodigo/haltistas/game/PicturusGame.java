@@ -11,6 +11,7 @@ public class PicturusGame {
 
     private Server server;
     private List<String> playerList;
+    private String gameWord;
 
     public PicturusGame(Server server) {
 
@@ -18,8 +19,31 @@ public class PicturusGame {
         this.playerList = new ArrayList<>();
     }
 
+    /**
+     * adds the players to the playerList
+     * @param playerName
+     */
     public void addPlayer(String playerName) {
         playerList.add(playerName);
     }
-       
+
+    /**
+     * gets the word from the list and sends it to the Drawing Player
+     * sends it through server whisper
+     */
+    public void wordToDraw() {
+
+    }
+
+    /**
+     * compares the gameWord with the words sent by the chat with /CHAT/
+     */
+    public void wordCheck(String wordGuess) {
+
+    }
+
+    
+
+
+
 }
