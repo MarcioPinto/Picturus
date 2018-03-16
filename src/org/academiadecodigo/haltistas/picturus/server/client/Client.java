@@ -1,5 +1,8 @@
 package org.academiadecodigo.haltistas.picturus.server.client;
 
+import org.academiadecodigo.haltistas.picturus.server.client.controllers.KeyboardController;
+import org.academiadecodigo.haltistas.picturus.server.client.graphics.Draw;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,9 +20,15 @@ public class Client {
     private BufferedReader fromServer;
     private PrintWriter toServer;
 
+    private Draw draw;
+
     public Client(String hostName, int portNumber) {
         this.hostName = hostName;
         this.portNumber = portNumber;
+
+        draw = new Draw(this);
+        Thread keyboard = new Thread(new KeyboardController(draw));
+        keyboard.start();
     }
 
     //init communication
@@ -44,6 +53,8 @@ public class Client {
             String message = fromServer.readLine();
 
             checkMessage(message);
+
+            draw.receive(message);
 
         } catch (IOException e) {
             e.printStackTrace();

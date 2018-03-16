@@ -1,5 +1,7 @@
 package org.academiadecodigo.haltistas.picturus.server.client;
 
+import org.academiadecodigo.haltistas.picturus.server.client.controllers.KeyboardController;
+
 import java.io.IOException;
 
 public class ClientLauncher {
@@ -12,7 +14,9 @@ public class ClientLauncher {
         Client client = new Client(hostName, portNumber);
 
         try {
+
             client.init();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
