@@ -32,4 +32,29 @@ public class Client {
 
     }
 
+
+    public void send(String message) {
+        toServer.println(message);
+    }
+
+
+    public void receive() {
+        try {
+
+            String message = fromServer.readLine();
+
+            checkMessage(message);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private String checkMessage(String message) {
+        //checks how to interpret message
+
+        return message;
+    }
+
 }
