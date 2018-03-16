@@ -14,7 +14,7 @@ import java.util.concurrent.Executors;
 public class Server {
 
     private ServerSocket serverSocket;
-    private Set<VerySpecialHandler> clientList;
+    private Set<clientHandler> clientList;
 
 
     public Server(int port) throws IOException {
@@ -31,7 +31,7 @@ public class Server {
         while (true) {
 
             Socket clientSocket = serverSocket.accept();
-            VerySpecialHandler handler = new VerySpecialHandler(clientSocket);
+            clientHandler handler = new clientHandler(clientSocket);
 
             clientList.add(handler);
             service.submit(handler);
@@ -41,20 +41,20 @@ public class Server {
 
 
     private void broadcast(String message) {
-        for (VerySpecialHandler s : clientList) {
+        for (clientHandler s : clientList) {
             s.writeMessage(message);
 
         }
     }
 
 
-    private class VerySpecialHandler implements Runnable {
+    private class clientHandler implements Runnable {
 
         private Socket connection;
         private PrintWriter toClients;
         private BufferedReader fromClients;
 
-        VerySpecialHandler(Socket clientSocket) {
+        clientHandler(Socket clientSocket) {
             this.connection = clientSocket;
         }
 
