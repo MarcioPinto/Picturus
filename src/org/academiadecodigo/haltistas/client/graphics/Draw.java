@@ -1,8 +1,8 @@
 package org.academiadecodigo.haltistas.client.graphics;
 
+import org.academiadecodigo.haltistas.GameCommand;
 import org.academiadecodigo.haltistas.client.Client;
 import org.academiadecodigo.simplegraphics.graphics.Text;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -37,7 +37,7 @@ public class Draw {
 
     public void send() {
 
-        String finalMessage = "/CHAT/ " + messageToSend;
+        String finalMessage = GameCommand.CHAT + messageToSend;
         client.send(finalMessage);
         messageToSend = "";
     }

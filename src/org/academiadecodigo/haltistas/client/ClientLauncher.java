@@ -9,7 +9,7 @@ public class ClientLauncher {
 
     public static void main(String[] args) {
 
-        String hostName = "192.168.1.14";
+        String hostName = "localhost";
         int portNumber = 55555 ;
 
         Client client = new Client(hostName, portNumber);

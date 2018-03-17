@@ -1,6 +1,5 @@
 package org.academiadecodigo.haltistas.server;
 
-import org.academiadecodigo.haltistas.server.Server;
 import java.io.IOException;
 
 public class ServerLauncher {

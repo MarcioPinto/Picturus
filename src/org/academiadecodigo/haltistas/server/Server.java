@@ -42,7 +42,7 @@ public class Server {
             clientList.add(handler);
             service.submit(handler);
             System.out.println("Connection with new client @ " + clientSocket + "\n");
-
+            System.out.println(clientList.size());
         }
     }
 
