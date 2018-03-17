@@ -30,7 +30,7 @@ public class KeyboardController implements KeyboardHandler, Runnable {
 
     @Override
     public void keyPressed(char c) {
-        client.drawTosend(c);
+        client.drawToSend(c);
     }
 
     @Override
