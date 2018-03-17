@@ -1,5 +1,6 @@
-package org.academiadecodigo.haltistas.picturus.server;
+package org.academiadecodigo.haltistas;
 
+import org.academiadecodigo.haltistas.server.Server;
 import java.io.IOException;
 
 public class ServerLauncher {
