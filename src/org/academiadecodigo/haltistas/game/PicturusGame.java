@@ -2,6 +2,7 @@ package org.academiadecodigo.haltistas.game;
 
 import org.academiadecodigo.haltistas.server.Server;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class PicturusGame {
@@ -31,9 +32,15 @@ public class PicturusGame {
      * sends it through server whisper
      */
     public void wordToDraw() {
+        gameWord = GameWords.getWord();
 
-        // invoke bruno method
     }
+
+    public void drawingPlayer(){
+        Collections.shuffle(playerList);
+        server.whisper(playerList.get(0),gameWord);
+    }
+
 
     /**
      * compares the gameWord with the words sent by the chat with /CHAT/

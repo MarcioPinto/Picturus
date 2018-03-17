@@ -47,14 +47,14 @@ public class Server {
     }
 
 
-    private void broadcast(String message) {
+    public void broadcast(String message) {
         for (clientHandler client : clientList) {
             client.writeMessage(message);
 
         }
     }
 
-    private void whisper(String name, String word) {
+    public void whisper(String name, String word) {
         for (clientHandler client : clientList) {
             if (client.name.equalsIgnoreCase(name)) {
                 client.writeMessage(word);
@@ -101,9 +101,6 @@ public class Server {
                         continue;
                     }
 
-                    if (message.equalsIgnoreCase("/whisper")) {
-                        whisper(name, GameCommand.GUESS_WORD);
-                    }
                     broadcast(name + " : " + message);
 
                 }
