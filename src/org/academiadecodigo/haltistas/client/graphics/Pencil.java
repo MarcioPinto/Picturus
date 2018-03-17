@@ -1,6 +1,6 @@
-package org.academiadecodigo.haltistas.picturus.server.client.graphics;
+package org.academiadecodigo.haltistas.client.graphics;
 
-import org.academiadecodigo.haltistas.picturus.server.client.controllers.MouseController;
+import org.academiadecodigo.haltistas.client.controllers.MouseController;
 import org.academiadecodigo.simplegraphics.graphics.Color;
 import org.academiadecodigo.simplegraphics.graphics.Line;
 

@@ -1,6 +1,6 @@
-package org.academiadecodigo.haltistas.picturus.server.client.controllers;
+package org.academiadecodigo.haltistas.client.controllers;
 
-import org.academiadecodigo.haltistas.picturus.server.client.Client;
+import org.academiadecodigo.haltistas.client.Client;
 import org.academiadecodigo.simplegraphics.keyboard.Keyboard;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardEvent;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardEventType;

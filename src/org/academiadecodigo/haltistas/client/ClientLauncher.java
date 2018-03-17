@@ -1,7 +1,7 @@
-package org.academiadecodigo.haltistas.picturus.server.client;
+package org.academiadecodigo.haltistas.client;
 
-import org.academiadecodigo.haltistas.picturus.server.client.controllers.KeyboardController;
-import org.academiadecodigo.haltistas.picturus.server.client.controllers.MouseController;
+import org.academiadecodigo.haltistas.client.controllers.KeyboardController;
+import org.academiadecodigo.haltistas.client.controllers.MouseController;
 
 import java.io.IOException;
 

@@ -1,6 +1,6 @@
-package org.academiadecodigo.haltistas.picturus.server.client.graphics;
+package org.academiadecodigo.haltistas.client.graphics;
 
-import org.academiadecodigo.haltistas.picturus.server.client.Client;
+import org.academiadecodigo.haltistas.client.Client;
 import org.academiadecodigo.simplegraphics.graphics.Text;
 
 import java.util.LinkedList;

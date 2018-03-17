@@ -1,4 +1,4 @@
-package org.academiadecodigo.haltistas.game;
+package org.academiadecodigo.haltistas.server.game;
 
 import java.util.*;
 

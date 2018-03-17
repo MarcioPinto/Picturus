@@ -1,7 +1,7 @@
-package org.academiadecodigo.haltistas.picturus.server.client;
+package org.academiadecodigo.haltistas.client;
 
-import org.academiadecodigo.haltistas.picturus.server.client.graphics.Draw;
-import org.academiadecodigo.haltistas.picturus.server.client.graphics.Pencil;
+import org.academiadecodigo.haltistas.client.graphics.Draw;
+import org.academiadecodigo.haltistas.client.graphics.Pencil;
 import org.academiadecodigo.simplegraphics.graphics.Canvas;
 import org.academiadecodigo.simplegraphics.graphics.Rectangle;
 

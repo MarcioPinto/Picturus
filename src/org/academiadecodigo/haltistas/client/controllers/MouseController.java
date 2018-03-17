@@ -1,6 +1,6 @@
-package org.academiadecodigo.haltistas.picturus.server.client.controllers;
+package org.academiadecodigo.haltistas.client.controllers;
 
-import org.academiadecodigo.haltistas.picturus.server.client.Client;
+import org.academiadecodigo.haltistas.client.Client;
 import org.academiadecodigo.simplegraphics.mouse.Mouse;
 import org.academiadecodigo.simplegraphics.mouse.MouseEvent;
 import org.academiadecodigo.simplegraphics.mouse.MouseEventType;
