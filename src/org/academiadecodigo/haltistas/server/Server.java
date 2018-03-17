@@ -1,7 +1,7 @@
 package org.academiadecodigo.haltistas.server;
 
 import org.academiadecodigo.haltistas.GameCommand;
-import org.academiadecodigo.haltistas.game.PicturusGame;
+import org.academiadecodigo.haltistas.server.game.PicturusGame;
 
 import java.io.BufferedReader;
 import java.io.IOException;

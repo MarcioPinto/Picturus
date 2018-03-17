@@ -1,4 +1,4 @@
-package org.academiadecodigo.haltistas;
+package org.academiadecodigo.haltistas.server;
 
 import org.academiadecodigo.haltistas.server.Server;
 import java.io.IOException;
