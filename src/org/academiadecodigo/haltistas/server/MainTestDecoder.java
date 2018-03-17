@@ -4,7 +4,7 @@ public class MainTestDecoder {
 
     public static void main(String[] args) {
 
-    Decoder decoder = new Decoder("/draw/awesdgfhj,gfndwfghjg");
-    decoder.decode();
+    Decoder decoder = new Decoder("/DRAW/ /NAME/ thisisthemessage");
+    decoder.decoder();
     }
 }

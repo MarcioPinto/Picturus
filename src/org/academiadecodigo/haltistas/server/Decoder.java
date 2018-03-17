@@ -2,30 +2,28 @@ package org.academiadecodigo.haltistas.server;
 
 public class Decoder {
 
-    private String message;
-    private String command;
     private String information;
+    String[] splitedMessage;
 
-    public Decoder(String message) {
-        this.message = message;
-    }
 
-    public void decode() {
-        System.out.println(message.substring(1, 5));
-        command = message.substring(1, 5);
+    public void decoder(String message) {
+        // TODO: /DRAW/ /NAME/ MESSAGE
+        splitedMessage = message.split(" ");
+        information = splitedMessage[2];
 
-        information = message.substring(6);
-        System.out.println("this is the message: " + information);
+        System.out.println(splitedMessage[2]);
+
+        sendAnswer();
     }
 
     public String sendAnswer() {
-        switch (command) {
-            case "chat":
+        switch (splitedMessage[0]) {
+            case "/CHAT/":
                 //TODO this need revision to verify
                 return information;
 
 
-            case "draw":
+            case "/DRAW/":
                 //TODO this need revision to verify
                 return information;
 
