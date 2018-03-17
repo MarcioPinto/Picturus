@@ -24,7 +24,12 @@ public class MouseController implements MouseHandler {
     private int count;
 
 
-    public void init(Client client) {
+    public MouseController (Client client){
+        this.client = client;
+    }
+
+
+    public void init() {
 
         Mouse mouse = new Mouse(this);
 
@@ -34,7 +39,6 @@ public class MouseController implements MouseHandler {
 
         mouse.addEventListener(MouseEventType.MOUSE_DRAGGED);
 
-        this.client = client;
     }
 
 

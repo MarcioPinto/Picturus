@@ -1,6 +1,6 @@
 package org.academiadecodigo.haltistas.picturus.server.client.controllers;
 
-import org.academiadecodigo.haltistas.picturus.server.client.graphics.Draw;
+import org.academiadecodigo.haltistas.picturus.server.client.Client;
 import org.academiadecodigo.simplegraphics.keyboard.Keyboard;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardEvent;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardEventType;
@@ -9,10 +9,10 @@ import org.academiadecodigo.simplegraphics.keyboard.KeyboardHandler;
 public class KeyboardController implements KeyboardHandler, Runnable {
 
 
-    private Draw draw;
+    private Client client;
 
-    public KeyboardController(Draw draw) {
-        this.draw = draw;
+    public KeyboardController(Client client) {
+        this.client = client;
     }
 
 
@@ -30,7 +30,7 @@ public class KeyboardController implements KeyboardHandler, Runnable {
 
     @Override
     public void keyPressed(char c) {
-        draw.drawToSend(c);
+        client.drawTosend(c);
     }
 
     @Override
@@ -40,11 +40,12 @@ public class KeyboardController implements KeyboardHandler, Runnable {
 
     @Override
     public void backspace() {
-        draw.delete();
+        client.drawDelete();
     }
 
     @Override
     public void enter() {
-        draw.send();
+        client.drawSend();
     }
+
 }

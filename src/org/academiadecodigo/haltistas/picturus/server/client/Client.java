@@ -27,8 +27,6 @@ public class Client {
         this.portNumber = portNumber;
 
         draw = new Draw(this);
-        Thread keyboard = new Thread(new KeyboardController(draw));
-        keyboard.start();
     }
 
     //init communication
@@ -66,6 +64,18 @@ public class Client {
         //checks how to interpret message
 
         return message;
+    }
+
+    public void drawTosend(char key) {
+        draw.drawToSend(key);
+    }
+
+    public void drawDelete() {
+        draw.delete();
+    }
+
+    public void drawSend() {
+        draw.send();
     }
 
 }
