@@ -1,4 +1,4 @@
-package org.academiadecodigo.haltistas.game;
+package org.academiadecodigo.haltistas.server.game;
 
 import org.academiadecodigo.haltistas.server.Server;
 import java.util.ArrayList;
