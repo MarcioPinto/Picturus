@@ -63,6 +63,13 @@ public class Server {
         }
     }
 
+    public void roundWinner(String name){
+        for (clientHandler client : clientList){
+            client.writeMessage(name + GameCommand.GUESS_WORD);
+            client.writeMessage(GameCommand.NEW_ROUND);
+        }
+    }
+
 
     private class clientHandler implements Runnable {
 
