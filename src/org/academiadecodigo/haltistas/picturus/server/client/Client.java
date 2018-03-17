@@ -1,7 +1,7 @@
 package org.academiadecodigo.haltistas.picturus.server.client;
 
-import org.academiadecodigo.haltistas.picturus.server.client.controllers.KeyboardController;
 import org.academiadecodigo.haltistas.picturus.server.client.graphics.Draw;
+import org.academiadecodigo.haltistas.picturus.server.client.graphics.Pencil;
 import org.academiadecodigo.simplegraphics.graphics.Canvas;
 import org.academiadecodigo.simplegraphics.graphics.Rectangle;
 
@@ -24,12 +24,15 @@ public class Client {
     private PrintWriter toServer;
 
     private Draw draw;
+    private Pencil pencil;
+
 
     public Client(String hostName, int portNumber) {
         this.hostName = hostName;
         this.portNumber = portNumber;
 
         draw = new Draw(this);
+        pencil = new Pencil();
     }
 
     //init communication
@@ -53,12 +56,6 @@ public class Client {
     }
 
 
-    private String checkMessage(String message) {
-        //checks how to interpret message
-
-        return message;
-    }
-
     public void drawToSend(char key) {
         draw.drawToSend(key);
     }
@@ -79,7 +76,6 @@ public class Client {
         public void run() {
 
             while (!socket.isClosed()) {
-
 
                 try {
 
@@ -102,24 +98,37 @@ public class Client {
             }
         }
 
-        public void receivedMessage(String message) {
 
-            String[] point = message.split(" ");
+        private void receivedMessage(String message) {
 
-            double IniX = Double.parseDouble(point[0]);
-            double IniY = Double.parseDouble(point[1]);
-            double FinX = Double.parseDouble(point[2]);
-            double FinY = Double.parseDouble(point[3]);
+            if (message.equals(null) || message.isEmpty()) {
+                return;
+            }
 
-            startDrawing(IniX, IniY, FinX, FinY);
+            String[] str = message.split(" ");
 
+            switch (str[0]) {
 
-            checkMessage(message);
+                case "/DRAW/":
 
-            draw.receive(message);
+                    message = message.replaceFirst(str[0], "").replaceFirst(str[1], "");
+                    message = message.substring(message.indexOf(" ") + 2);
 
+                    String[] point = message.split(" ");
+
+                    double IniX = Double.parseDouble(point[0]);
+                    double IniY = Double.parseDouble(point[1]);
+                    double FinX = Double.parseDouble(point[2]);
+                    double FinY = Double.parseDouble(point[3]);
+                    pencil.draw(IniX, IniY, FinX, FinY);
+
+                    break;
+
+                case "/CHAT/":
+
+                    draw.receive(message);
+                    break;
+            }
         }
     }
-
-
 }
