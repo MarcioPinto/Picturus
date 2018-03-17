@@ -1,4 +1,7 @@
-package org.academiadecodigo.haltistas.Server;
+package org.academiadecodigo.haltistas.server;
+
+import org.academiadecodigo.haltistas.GameCommand;
+import org.academiadecodigo.haltistas.game.PicturusGame;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,12 +18,14 @@ public class Server {
 
     private ServerSocket serverSocket;
     private Set<clientHandler> clientList;
+    private PicturusGame game;
 
 
     public Server(int port) throws IOException {
 
         this.serverSocket = new ServerSocket(port);
         this.clientList = new HashSet<>();
+        this.game = new PicturusGame(this);
     }
 
 
@@ -31,18 +36,29 @@ public class Server {
         while (true) {
 
             Socket clientSocket = serverSocket.accept();
-            clientHandler handler = new clientHandler(clientSocket);
+            String clientName = "Guest";
+            clientHandler handler = new clientHandler(clientSocket, clientName);
 
             clientList.add(handler);
             service.submit(handler);
             System.out.println("Connection with new client @ " + clientSocket + "\n");
+
         }
     }
 
 
     private void broadcast(String message) {
-        for (clientHandler s : clientList) {
-            s.writeMessage(message);
+        for (clientHandler client : clientList) {
+            client.writeMessage(message);
+
+        }
+    }
+
+    private void whisper(String name, String word) {
+        for (clientHandler client : clientList) {
+            if (client.name.equalsIgnoreCase(name)) {
+                client.writeMessage(word);
+            }
 
         }
     }
@@ -53,9 +69,12 @@ public class Server {
         private Socket connection;
         private PrintWriter toClients;
         private BufferedReader fromClients;
+        private String name;
+        private String word;
 
-        clientHandler(Socket clientSocket) {
+        clientHandler(Socket clientSocket, String clientName) {
             this.connection = clientSocket;
+            this.name = clientName;
         }
 
         @Override
@@ -72,15 +91,22 @@ public class Server {
                     String message = fromClients.readLine();
                     System.err.println("MESSAGE: " + message);
 
-                    if (message.equalsIgnoreCase("/quit")) {
-                        System.err.println("CLIENT DISCONNECTED");
+                    if (message.equalsIgnoreCase(GameCommand.QUIT)) {
                         broadcast("Player disconnected.");
                         break;
                     }
 
-                    broadcast(message);
-                }
+                    if (message.equalsIgnoreCase(GameCommand.CHANGE_NAME)) {
+                        name = fromClients.readLine();
+                        continue;
+                    }
 
+                    if (message.equalsIgnoreCase("/whisper")) {
+                        whisper(name, GameCommand.GUESS_WORD);
+                    }
+                    broadcast(name + " : " + message);
+
+                }
             } catch (IOException e) {
                 e.printStackTrace();
 

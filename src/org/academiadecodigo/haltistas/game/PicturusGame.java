@@ -1,11 +1,8 @@
 package org.academiadecodigo.haltistas.game;
 
-
-import org.academiadecodigo.haltistas.Server.Server;
-
+import org.academiadecodigo.haltistas.server.Server;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
 
 public class PicturusGame {
 
@@ -19,12 +16,14 @@ public class PicturusGame {
         this.playerList = new ArrayList<>();
     }
 
+
     /**
      * adds the players to the playerList
      * @param playerName
      */
     public void addPlayer(String playerName) {
         playerList.add(playerName);
+
     }
 
     /**
@@ -32,6 +31,7 @@ public class PicturusGame {
      * sends it through server whisper
      */
     public void wordToDraw() {
+
         // invoke bruno method
     }
 
