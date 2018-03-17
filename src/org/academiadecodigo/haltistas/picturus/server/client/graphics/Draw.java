@@ -22,7 +22,7 @@ public class Draw {
         this.client = client;
         this.messageToSend = "";
 
-        sendMessage = new Text(400, 500, messageToSend);
+        sendMessage = new Text(420, 400, messageToSend);
         sendMessage.draw();
 
         history = new LinkedList<>();
@@ -36,7 +36,9 @@ public class Draw {
 
 
     public void send() {
-        client.send(messageToSend);
+
+        String finalMessage = "/CHAT/ " + messageToSend;
+        client.send(finalMessage);
         messageToSend = "";
     }
 
@@ -47,16 +49,16 @@ public class Draw {
             text.translate(0, -20);
         }
 
-        receivedMessage = new Text(400, 480, message);
+        receivedMessage = new Text(420, 380, message);
         history.add(receivedMessage);
         receivedMessage.draw();
-
     }
 
+
+    //TODO corrigir backspace para quando nao tem nada para apagar
 
     public void delete() {
         messageToSend = messageToSend.substring(0, messageToSend.length() - 1);
         sendMessage.setText(messageToSend);
     }
-
 }

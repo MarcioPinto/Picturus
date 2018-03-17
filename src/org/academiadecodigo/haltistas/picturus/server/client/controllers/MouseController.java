@@ -9,7 +9,6 @@ import org.academiadecodigo.simplegraphics.mouse.MouseHandler;
 public class MouseController implements MouseHandler {
 
 
-
     public static final double MOUSE_ADJST_X = -7;
     public static final double MOUSE_ADJST_Y = -30;
 
@@ -24,7 +23,7 @@ public class MouseController implements MouseHandler {
     private int count;
 
 
-    public MouseController (Client client){
+    public MouseController(Client client) {
         this.client = client;
     }
 
@@ -80,7 +79,7 @@ public class MouseController implements MouseHandler {
             return;
         }
 
-        String str = String.valueOf(XIni) + " " + String.valueOf(YIni) + " " + String.valueOf(mouseEvent.getX()) + " " + String.valueOf(mouseEvent.getY()) + "\n";
+        String str = "/DRAW/" + " " + String.valueOf(XIni) + " " + String.valueOf(YIni) + " " + String.valueOf(mouseEvent.getX()) + " " + String.valueOf(mouseEvent.getY()) + "\n";
         System.out.println(str);
 
         client.send(str);

@@ -101,9 +101,6 @@ public class Client {
 
         private void receivedMessage(String message) {
 
-            if (message.equals(null) || message.isEmpty()) {
-                return;
-            }
 
             String[] str = message.split(" ");
 
@@ -111,8 +108,8 @@ public class Client {
 
                 case "/DRAW/":
 
-                    message = message.replaceFirst(str[0], "").replaceFirst(str[1], "");
-                    message = message.substring(message.indexOf(" ") + 2);
+                    message = message.replaceFirst(str[0], "");
+                    message = message.substring(message.indexOf(" ") + 1);
 
                     String[] point = message.split(" ");
 
@@ -120,14 +117,14 @@ public class Client {
                     double IniY = Double.parseDouble(point[1]);
                     double FinX = Double.parseDouble(point[2]);
                     double FinY = Double.parseDouble(point[3]);
-                    pencil.draw(IniX, IniY, FinX, FinY);
 
+                    pencil.draw(IniX, IniY, FinX, FinY);
                     break;
 
                 case "/CHAT/":
 
                     message = message.replaceFirst(str[0], "");
-                    message = message.substring(message.indexOf(" " + 1));
+                    message = message.substring(message.indexOf(" ") + 1);
 
                     draw.receive(message);
                     break;

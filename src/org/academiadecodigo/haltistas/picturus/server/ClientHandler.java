@@ -66,6 +66,5 @@ public class ClientHandler implements Runnable {
     public void writeMessage(String message) {
         toClients.println(message);
     }
-
 }
 

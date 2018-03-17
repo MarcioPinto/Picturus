@@ -9,8 +9,8 @@ public class ClientLauncher {
 
     public static void main(String[] args) {
 
-        String hostName = "localhost";
-        int portNumber = 5556;
+        String hostName = "192.168.1.14";
+        int portNumber = 55555 ;
 
         Client client = new Client(hostName, portNumber);
 
@@ -19,8 +19,8 @@ public class ClientLauncher {
 
         MouseController mouseController = new MouseController(client);
         mouseController.init();
-        try {
 
+        try {
             client.init();
 
         } catch (IOException e) {
