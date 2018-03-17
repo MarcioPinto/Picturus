@@ -16,11 +16,9 @@ public class GameWords {
             ListWords.add(words[i]);
         }
         Collections.shuffle(ListWords);
-        System.out.println("shuffle " + ListWords);
 
         String finalWorld = ListWords.get(0);
 
-        System.out.println(finalWorld);
         return finalWorld;
     }
 }
