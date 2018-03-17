@@ -32,7 +32,7 @@ public class PicturusGame {
      * sends it through server whisper
      */
     public void wordToDraw() {
-
+        // invoke bruno method
     }
 
     /**
@@ -40,9 +40,10 @@ public class PicturusGame {
      */
     public void wordCheck(String wordGuess) {
 
+
     }
 
-    
+
 
 
 
