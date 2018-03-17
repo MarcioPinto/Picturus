@@ -126,6 +126,9 @@ public class Client {
 
                 case "/CHAT/":
 
+                    message = message.replaceFirst(str[0], "");
+                    message = message.substring(message.indexOf(" " + 1));
+
                     draw.receive(message);
                     break;
             }
