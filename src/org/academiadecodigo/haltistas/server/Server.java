@@ -9,22 +9,23 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
 
     private ServerSocket serverSocket;
-    private Set<clientHandler> clientList;
+    private Map<String, ClientHandler> clientList;
     private PicturusGame game;
+    private int index;
 
 
     public Server(int port) throws IOException {
 
         this.serverSocket = new ServerSocket(port);
-        this.clientList = new HashSet<>();
+        this.clientList = new HashMap<>();
         this.game = new PicturusGame(this);
     }
 
@@ -36,35 +37,43 @@ public class Server {
         while (true) {
 
             Socket clientSocket = serverSocket.accept();
-            String clientName = "Guest";
-            clientHandler handler = new clientHandler(clientSocket, clientName);
 
-            clientList.add(handler);
+            String clientName = generateName();
+
+            ClientHandler handler = new ClientHandler(clientSocket);
+
+            clientList.put(clientName, handler);
+
+            game.addPlayer(clientName);
+
+            System.out.println(clientName);
             service.submit(handler);
             System.out.println("Connection with new client @ " + clientSocket + "\n");
 
         }
     }
 
+    private String generateName() {
+        index++;
+        return "Guest " + index;
+    }
 
     public void broadcast(String message) {
-        for (clientHandler client : clientList) {
-            client.writeMessage(message);
 
+        for (ClientHandler client : clientList.values()) {
+            client.writeMessage(message);
         }
     }
 
     public void whisper(String name, String word) {
-        for (clientHandler client : clientList) {
-            if (client.name.equalsIgnoreCase(name)) {
-                client.writeMessage(word);
-            }
 
-        }
+       ClientHandler client = clientList.get(name);
+
+       client.writeMessage(word);
     }
 
 
-    private class clientHandler implements Runnable {
+    private class ClientHandler implements Runnable {
 
         private Socket connection;
         private PrintWriter toClients;
@@ -72,9 +81,8 @@ public class Server {
         private String name;
         private String word;
 
-        clientHandler(Socket clientSocket, String clientName) {
+        ClientHandler(Socket clientSocket) {
             this.connection = clientSocket;
-            this.name = clientName;
         }
 
         @Override
@@ -101,7 +109,7 @@ public class Server {
                         continue;
                     }
 
-                    broadcast(name + " : " + message);
+                    broadcast(message);
 
                 }
             } catch (IOException e) {
