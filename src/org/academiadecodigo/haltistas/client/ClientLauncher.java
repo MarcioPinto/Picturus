@@ -10,7 +10,7 @@ public class ClientLauncher {
     public static void main(String[] args) {
 
         String hostName = "localhost";
-        int portNumber = 5050 ;
+        int portNumber = 55555;
 
         Client client = new Client(hostName, portNumber);
 
