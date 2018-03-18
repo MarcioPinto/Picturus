@@ -24,7 +24,6 @@ public class PicturusGame {
      */
     public void addPlayer(String playerName) {
         playerList.add(playerName);
-
     }
 
     /**
@@ -33,7 +32,6 @@ public class PicturusGame {
      */
     public void wordToDraw() {
         gameWord = GameWords.getWord();
-
     }
 
     public void drawingPlayer(){
