@@ -48,6 +48,7 @@ public class Draw {
 
     public void receive(String message) {
 
+        System.out.println(" CHATTTTT " + message);
 
         for (Text text : history) {
             text.translate(0, -20);

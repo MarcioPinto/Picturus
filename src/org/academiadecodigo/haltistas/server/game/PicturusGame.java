@@ -24,7 +24,6 @@ public class PicturusGame {
         this.correctGuess = false;
     }
 
-
     public void prepareGame() {
 
         for (String player : playerList) {
@@ -36,16 +35,18 @@ public class PicturusGame {
             System.out.println(GameCommand.NOT_ENOUGH_PLAYERS);
             return;
         }
-
+        //TODO Implement clock to wait 30 seconds until round starts.
         System.out.println(GameCommand.NEW_ROUND);
         startGame();
 
     }
-
+    //TODO Synchronize method, make players that enter after round start wait , and notify them when round ends.
     public void startGame() {
 
-        if (correctGuess) {
+    //TODO add second condition when time hits 0 .
+        if (correctGuess ) {
             correctGuess = false;
+            notifyAll();
             prepareGame();
         }
     }
@@ -58,7 +59,8 @@ public class PicturusGame {
 
     public void chatMessage(String message) {
 
-        wordCheck(message);
+        //TODO make the condition with the word starting with ! to differentiate from regular chat message
+        // wordCheck(message);
 
         server.broadcast(Encoder.chat(message));
     }
@@ -92,11 +94,11 @@ public class PicturusGame {
      * compares the gameWord with the words sent by the chat with /CHAT/
      */
     public void wordCheck(String wordGuess) {
-
+//TODO HERE IS WHERE THE WORD IS COMPARED FROM !<word>
         for (String aPlayerList : playerList) {
 
             if (gameWord.equalsIgnoreCase(wordGuess)) {
-                System.out.println("PLAYER: " + aPlayerList + " GUESSED CORRECTLY!");
+                System.out.println("PLAYER: " + aPlayerList + GameCommand.CORRECT_WORD);
                 correctGuess = true;
             }
 

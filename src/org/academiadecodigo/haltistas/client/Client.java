@@ -4,7 +4,6 @@ import org.academiadecodigo.haltistas.client.graphics.Draw;
 import org.academiadecodigo.haltistas.client.graphics.Pencil;
 import org.academiadecodigo.simplegraphics.graphics.Canvas;
 import org.academiadecodigo.simplegraphics.graphics.Rectangle;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -122,6 +121,7 @@ public class Client {
                     break;
 
                 case "/CHAT/":
+
 
                     message = message.replaceFirst(str[0], "");
                     message = message.substring(message.indexOf(" ") + 1);

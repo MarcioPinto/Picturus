@@ -48,6 +48,7 @@ public class Server {
 
             System.out.println(clientName);
             service.submit(handler);
+
             System.out.println("Connection with new client @ " + clientSocket + "\n");
             game.prepareGame();
         }
@@ -68,7 +69,6 @@ public class Server {
     public void whisper(String name, String word) {
 
         ClientHandler client = clientList.get(name);
-
         client.writeMessage(word);
     }
 

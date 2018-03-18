@@ -20,7 +20,8 @@ public class Pencil {
 
     public Pencil() {
         lines = new LinkedList<>();
-        canDraw = false;
+        //TODO change to false
+        canDraw = true;
     }
 
     public void draw(double XIni, double YIni, double XFin, double YFin) {

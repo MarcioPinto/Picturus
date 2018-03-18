@@ -23,19 +23,20 @@ public class Decoder {
                 message = message.replaceFirst(splitedMessage[0], "");
                 message = message.substring(message.indexOf(" ") + 1);
 
-                System.out.println("CAHT " + message);
+                System.out.println("CHAT " + message);
                 game.chatMessage(message);
                 break;
 
             case "/DRAW/":
+
                 message = message.replaceFirst(splitedMessage[0], "");
                 message = message.substring(message.indexOf(" ") + 1);
+                System.out.println("DRAW" + message);
 
                 game.drawMessage(message);
                 break;
 
             default:
-
                 System.err.println("the command on the message is fuck up");
         }
     }
