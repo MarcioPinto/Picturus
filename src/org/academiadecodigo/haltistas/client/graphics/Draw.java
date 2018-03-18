@@ -17,6 +17,7 @@ public class Draw {
 
     private List<Text> history;
 
+    private boolean canDraw;
 
     public Draw(Client client) {
         this.client = client;
@@ -26,6 +27,8 @@ public class Draw {
         sendMessage.draw();
 
         history = new LinkedList<>();
+
+        canDraw = true;
     }
 
 
@@ -45,6 +48,7 @@ public class Draw {
 
     public void receive(String message) {
 
+
         for (Text text : history) {
             text.translate(0, -20);
         }
@@ -60,5 +64,9 @@ public class Draw {
     public void delete() {
         messageToSend = messageToSend.substring(0, messageToSend.length() - 1);
         sendMessage.setText(messageToSend);
+    }
+
+    public void setCanDraw(boolean canDraw) {
+        this.canDraw = canDraw;
     }
 }

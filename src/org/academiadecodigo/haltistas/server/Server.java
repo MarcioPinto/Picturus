@@ -49,7 +49,7 @@ public class Server {
             System.out.println(clientName);
             service.submit(handler);
             System.out.println("Connection with new client @ " + clientSocket + "\n");
-            System.out.println(clientList.size());
+            game.prepareGame();
         }
     }
 
@@ -67,13 +67,9 @@ public class Server {
 
     public void whisper(String name, String word) {
 
-       ClientHandler client = clientList.get(name);
+        ClientHandler client = clientList.get(name);
 
-       client.writeMessage(word);
-    }
-
-    public void roundWinner(String name){
-
+        client.writeMessage(word);
     }
 
 
@@ -82,12 +78,16 @@ public class Server {
         private Socket connection;
         private PrintWriter toClients;
         private BufferedReader fromClients;
+        private Decoder decoder;
+
         private String name;
         private String word;
 
         ClientHandler(Socket clientSocket) {
             this.connection = clientSocket;
+            decoder = new Decoder(game);
         }
+
 
         @Override
         public void run() {
@@ -113,8 +113,7 @@ public class Server {
                         continue;
                     }
 
-                    broadcast(message);
-
+                    decoder.decoder(message);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -142,6 +141,7 @@ public class Server {
         }
 
     }
+
 
 }
 
