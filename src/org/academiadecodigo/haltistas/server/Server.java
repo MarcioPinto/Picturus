@@ -49,7 +49,7 @@ public class Server {
             System.out.println(clientName);
             service.submit(handler);
             System.out.println("Connection with new client @ " + clientSocket + "\n");
-
+            game.prepareGame();
         }
     }
 

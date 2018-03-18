@@ -3,10 +3,7 @@ package org.academiadecodigo.haltistas.server.game;
 import org.academiadecodigo.haltistas.GameCommand;
 import org.academiadecodigo.haltistas.server.Server;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public class PicturusGame {
 
@@ -20,6 +17,7 @@ public class PicturusGame {
 
         this.server = server;
         this.playerList = new ArrayList<>();
+        this.newPLayer = new PriorityQueue<>();
         this.correctGuess = false;
     }
 
@@ -28,25 +26,28 @@ public class PicturusGame {
         for (String player : playerList) {
             newPLayer.addAll(Collections.singleton(player));
         }
+        System.out.println(playerList);
 
-        if (newPLayer.size() >= 3) {
-            System.out.println(GameCommand.NEW_ROUND);
-            startGame();
+        if (newPLayer.size()  < 4) {
+            System.out.println(GameCommand.NOT_ENOUGH_PLAYERS);
+            return;
         }
 
-        System.out.println(GameCommand.NOT_ENOUGH_PLAYERS);
+        System.out.println(GameCommand.NEW_ROUND);
+        startGame();
 
     }
 
     public void startGame() {
 
         if (correctGuess) {
-
+            correctGuess = false;
             prepareGame();
         }
 
 
     }
+    
 
     /**
      * adds the players to the playerList
