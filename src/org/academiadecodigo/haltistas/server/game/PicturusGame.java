@@ -20,9 +20,10 @@ public class PicturusGame {
 
         this.server = server;
         this.playerList = new ArrayList<>();
+        this.correctGuess = false;
     }
 
-    public void perpareGame() {
+    public void prepareGame() {
 
         for (String player : playerList) {
             newPLayer.addAll(Collections.singleton(player));
@@ -39,7 +40,10 @@ public class PicturusGame {
 
     public void startGame() {
 
-        correctGuess = false;
+        if (correctGuess) {
+
+            prepareGame();
+        }
 
 
     }
@@ -73,8 +77,13 @@ public class PicturusGame {
      */
     public void wordCheck(String wordGuess) {
 
+        for (String aPlayerList : playerList) {
 
+            if (gameWord.equalsIgnoreCase(wordGuess)) {
+                System.out.println("PLAYER: " + aPlayerList + " GUESSED CORRECTLY!");
+                correctGuess = true;
+            }
+
+        }
     }
-
-
 }
