@@ -4,6 +4,9 @@ import org.academiadecodigo.haltistas.GameCommand;
 import org.academiadecodigo.haltistas.server.Server;
 
 import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class PicturusGame {
 
@@ -21,6 +24,7 @@ public class PicturusGame {
         this.correctGuess = false;
     }
 
+
     public void prepareGame() {
 
         for (String player : playerList) {
@@ -28,7 +32,7 @@ public class PicturusGame {
         }
         System.out.println(playerList);
 
-        if (newPLayer.size()  < 4) {
+        if (newPLayer.size() < 4) {
             System.out.println(GameCommand.NOT_ENOUGH_PLAYERS);
             return;
         }
@@ -44,10 +48,20 @@ public class PicturusGame {
             correctGuess = false;
             prepareGame();
         }
-
-
     }
-    
+
+
+    public void drawMessage(String message) {
+        server.broadcast(Encoder.draw(message));
+    }
+
+
+    public void chatMessage(String message) {
+
+        wordCheck(message);
+
+        server.broadcast(Encoder.chat(message));
+    }
 
     /**
      * adds the players to the playerList
@@ -65,6 +79,7 @@ public class PicturusGame {
      */
     public void wordToDraw() {
         gameWord = GameWords.getWord();
+        drawingPlayer();
     }
 
     public void drawingPlayer() {

@@ -1,35 +1,42 @@
 package org.academiadecodigo.haltistas.server;
 
+import org.academiadecodigo.haltistas.server.game.PicturusGame;
+
 public class Decoder {
 
-    private String information;
-    String[] splitedMessage;
+    private PicturusGame game;
 
-
-    public void decoder(String message) {
-        // TODO: /DRAW/ /NAME/ MESSAGE
-        splitedMessage = message.split(" ");
-        information = splitedMessage[2];
-
-        System.out.println(splitedMessage[2]);
-
-        sendAnswer();
+    public Decoder(PicturusGame game) {
+        this.game = game;
     }
 
-    public String sendAnswer() {
-        switch (splitedMessage[0]) {
-            case "/CHAT/":
-                //TODO this need revision to verify
-                return information;
+    public void decoder(String message) {
 
+        // TODO: /DRAW/ /NAME/ MESSAGE
+
+        String[] splitedMessage = message.split(" ");
+
+        switch (splitedMessage[0]) {
+
+            case "/CHAT/":
+
+                message = message.replaceFirst(splitedMessage[0], "");
+                message = message.substring(message.indexOf(" ") + 1);
+
+                System.out.println("CAHT " + message);
+                game.chatMessage(message);
+                break;
 
             case "/DRAW/":
-                //TODO this need revision to verify
-                return information;
+                message = message.replaceFirst(splitedMessage[0], "");
+                message = message.substring(message.indexOf(" ") + 1);
+
+                game.drawMessage(message);
+                break;
 
             default:
+
                 System.err.println("the command on the message is fuck up");
         }
-        return null;
     }
 }
