@@ -67,9 +67,9 @@ public class Server {
 
     public void whisper(String name, String word) {
 
-       ClientHandler client = clientList.get(name);
+        ClientHandler client = clientList.get(name);
 
-       client.writeMessage(word);
+        client.writeMessage(word);
     }
 
 
@@ -138,6 +138,7 @@ public class Server {
         }
 
     }
+
 
 }
 
