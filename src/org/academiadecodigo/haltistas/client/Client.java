@@ -128,6 +128,17 @@ public class Client {
 
                     draw.receive(message);
                     break;
+
+
+                case "/ACTIVE/":
+
+                    pencil.setCanDraw(true);
+                    draw.setCanDraw(false);
+
+                    message = message.replaceFirst(str[0], "");
+                    message = message.substring(message.indexOf(" ") + 1);
+
+                    draw.receive("WORD IN PLAY! DRAW THIS SHIT: " + message);
             }
         }
     }

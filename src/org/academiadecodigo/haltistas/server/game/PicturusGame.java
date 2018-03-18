@@ -1,6 +1,7 @@
 package org.academiadecodigo.haltistas.server.game;
 
 import org.academiadecodigo.haltistas.server.Server;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -17,9 +18,31 @@ public class PicturusGame {
         this.playerList = new ArrayList<>();
     }
 
+    public synchronized void start() {
+
+        while (true) {
+
+
+
+        }
+    }
+
+
+    public void drawMessage(String message) {
+        server.broadcast(Encoder.draw(message));
+    }
+
+
+    public void chatMessage(String message) {
+
+        wordCheck(message);
+
+        server.broadcast(Encoder.chat(message));
+    }
 
     /**
      * adds the players to the playerList
+     *
      * @param playerName
      */
     public void addPlayer(String playerName) {
@@ -32,11 +55,12 @@ public class PicturusGame {
      */
     public void wordToDraw() {
         gameWord = GameWords.getWord();
+        drawingPlayer();
     }
 
-    public void drawingPlayer(){
+    public void drawingPlayer() {
         Collections.shuffle(playerList);
-        server.whisper(playerList.get(0),gameWord);
+        server.whisper(playerList.get(0), gameWord);
     }
 
 
@@ -47,9 +71,6 @@ public class PicturusGame {
 
 
     }
-
-
-
 
 
 }
