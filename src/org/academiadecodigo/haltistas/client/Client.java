@@ -1,5 +1,6 @@
 package org.academiadecodigo.haltistas.client;
 
+import org.academiadecodigo.haltistas.client.controllers.MouseController;
 import org.academiadecodigo.haltistas.client.graphics.Draw;
 import org.academiadecodigo.haltistas.client.graphics.Pencil;
 import org.academiadecodigo.simplegraphics.graphics.Canvas;
@@ -26,6 +27,8 @@ public class Client {
     private Draw draw;
     private Pencil pencil;
 
+    private MouseController mouseController;
+
 
     public Client(String hostName, int portNumber) {
         this.hostName = hostName;
@@ -33,6 +36,10 @@ public class Client {
 
         draw = new Draw(this);
         pencil = new Pencil();
+    }
+
+    public void setMouseController(MouseController mouseController) {
+        this.mouseController = mouseController;
     }
 
     //init communication
@@ -132,7 +139,7 @@ public class Client {
 
                 case "/ACTIVE/":
 
-                    pencil.setCanDraw(true);
+                    mouseController.setCanDraw(true);
                     draw.setCanWrite(false);
 
                     message = message.replaceFirst(str[0], "");

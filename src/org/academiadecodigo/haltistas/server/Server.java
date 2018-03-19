@@ -44,7 +44,7 @@ public class Server {
 
             ClientHandler handler = new ClientHandler(clientSocket);
 
-           synchronized (game) {
+            synchronized (game) {
 
                 clientList.put(clientName, handler);
 

@@ -48,10 +48,10 @@ public class PicturusGame implements Runnable {
                     playerList.add(name);
                 }
 
-                notifyAll();
                 server.broadcast(Encoder.info("Starting game!"), playerList); //just to start the game
                 System.out.println("AQUIAQUIAQUIA");
                 //different method...
+                notifyAll();
             }
             startingGame();
         }

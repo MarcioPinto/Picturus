@@ -22,9 +22,11 @@ public class MouseController implements MouseHandler {
     private double YFin;
     private int count;
 
+    private boolean canDraw;
 
     public MouseController(Client client) {
         this.client = client;
+        this.canDraw = false;
     }
 
 
@@ -72,6 +74,10 @@ public class MouseController implements MouseHandler {
     @Override
     public void mouseDragged(MouseEvent mouseEvent) {
 
+        if (!canDraw){
+            return;
+        }
+
         count++;
 
         if (count <= 0 || count % 3 != 0) {
@@ -83,6 +89,7 @@ public class MouseController implements MouseHandler {
                 String.valueOf(mouseEvent.getX()) + " " + String.valueOf(mouseEvent.getY()) + "\n";
         System.out.println(str);
 
+
         client.send(str);
 
         XIni = mouseEvent.getX();
@@ -92,5 +99,7 @@ public class MouseController implements MouseHandler {
         //System.out.println(mouseEvent);
     }
 
-
+    public void setCanDraw(boolean canDraw) {
+        this.canDraw = canDraw;
+    }
 }
