@@ -57,7 +57,7 @@ public class Client {
 
 
     public void drawToSend(char key) {
-        draw.drawToSend(key);
+        draw.write(key);
     }
 
     public void drawDelete() {
@@ -133,12 +133,20 @@ public class Client {
                 case "/ACTIVE/":
 
                     pencil.setCanDraw(true);
-                    draw.setCanDraw(false);
+                    draw.setCanWrite(false);
 
                     message = message.replaceFirst(str[0], "");
                     message = message.substring(message.indexOf(" ") + 1);
 
                     draw.receive("WORD IN PLAY! DRAW THIS SHIT: " + message);
+                    break;
+
+                case "/INFO/":
+
+                    message = message.replaceFirst(str[0], "");
+                    message = message.substring(message.indexOf(" ") + 1);
+
+                    draw.receive(message);
             }
         }
     }

@@ -17,7 +17,7 @@ public class Draw {
 
     private List<Text> history;
 
-    private boolean canDraw;
+    private boolean canWrite;
 
     public Draw(Client client) {
         this.client = client;
@@ -28,11 +28,15 @@ public class Draw {
 
         history = new LinkedList<>();
 
-        canDraw = true;
+        canWrite = true;
     }
 
 
-    public void drawToSend(char key) {
+    public void write(char key) {
+
+        if (!canWrite){
+            return;
+        }
         messageToSend += key;
         sendMessage.setText(messageToSend);
     }
@@ -66,7 +70,7 @@ public class Draw {
         sendMessage.setText(messageToSend);
     }
 
-    public void setCanDraw(boolean canDraw) {
-        this.canDraw = canDraw;
+    public void setCanWrite(boolean canWrite) {
+        this.canWrite = canWrite;
     }
 }

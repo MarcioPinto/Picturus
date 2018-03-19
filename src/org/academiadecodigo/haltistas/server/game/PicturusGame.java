@@ -2,42 +2,77 @@ package org.academiadecodigo.haltistas.server.game;
 
 import org.academiadecodigo.haltistas.server.Server;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
-public class PicturusGame {
-
+public class PicturusGame implements Runnable {
+    //needs to have a thread working in here as well
     private Server server;
     private List<String> playerList;
+    private LinkedList<String> waitingQueue;
     private String gameWord;
+    private int minPlayers = 3;
 
     public PicturusGame(Server server) {
 
         this.server = server;
         this.playerList = new ArrayList<>();
+        waitingQueue = new LinkedList<>();
     }
 
-    public synchronized void start() {
+    @Override
+    public void run() {
 
         while (true) {
 
+            synchronized (this) {
 
+                if (waitingQueue.isEmpty()) {
+                    continue;
+                }
 
+                while (waitingQueue.size() < minPlayers) {
+                    try {
+
+                        server.whisper(
+                                waitingQueue.get(
+                                        waitingQueue.size() - 1), Encoder.info("waiting..."));
+                        this.wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                while (!waitingQueue.isEmpty()) {
+                    String name = waitingQueue.poll();
+                    server.whisper(name, Encoder.info("The wait is over..."));
+                    playerList.add(name);
+                }
+
+                notifyAll();
+                server.broadcast(Encoder.info("Starting game!"), playerList); //just to start the game
+                System.out.println("AQUIAQUIAQUIA");
+                //different method...
+            }
+            startingGame();
         }
+
+    }
+
+    private void startingGame() {
+        wordToDraw();
     }
 
 
     public void drawMessage(String message) {
-        server.broadcast(Encoder.draw(message));
+        server.broadcast(Encoder.draw(message), playerList);
     }
 
 
     public void chatMessage(String message) {
 
-        wordCheck(message);
+        //wordCheck(message);
 
-        server.broadcast(Encoder.chat(message));
+        // server.broadcast(Encoder.chat(message), playerList);
     }
 
     /**
@@ -46,7 +81,7 @@ public class PicturusGame {
      * @param playerName
      */
     public void addPlayer(String playerName) {
-        playerList.add(playerName);
+        waitingQueue.offer(playerName);
     }
 
     /**
@@ -58,9 +93,12 @@ public class PicturusGame {
         drawingPlayer();
     }
 
+
     public void drawingPlayer() {
         Collections.shuffle(playerList);
-        server.whisper(playerList.get(0), gameWord);
+
+        String toSend = Encoder.activePlayer(gameWord);
+        server.whisper(playerList.get(0), toSend);
     }
 
 
@@ -69,8 +107,8 @@ public class PicturusGame {
      */
     public void wordCheck(String wordGuess) {
 
-
+        if (wordGuess.equals(gameWord)) {
+            startingGame();
+        }
     }
-
-
 }

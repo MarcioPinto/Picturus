@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -18,7 +19,7 @@ public class Server {
 
     private ServerSocket serverSocket;
     private Map<String, ClientHandler> clientList;
-    private PicturusGame game;
+    private final PicturusGame game;
     private int index;
 
 
@@ -33,6 +34,7 @@ public class Server {
     public void start() throws IOException {
 
         ExecutorService service = Executors.newCachedThreadPool();
+        new Thread(game).start();
 
         while (true) {
 
@@ -42,14 +44,17 @@ public class Server {
 
             ClientHandler handler = new ClientHandler(clientSocket);
 
-            clientList.put(clientName, handler);
+           synchronized (game) {
 
-            game.addPlayer(clientName);
+                clientList.put(clientName, handler);
 
-            System.out.println(clientName);
-            service.submit(handler);
-            System.out.println("Connection with new client @ " + clientSocket + "\n");
+                game.addPlayer(clientName);
 
+                System.out.println(clientName);
+                service.submit(handler);
+                System.out.println("Connection with new client @ " + clientSocket + "\n");
+                game.notifyAll();
+            }
         }
     }
 
@@ -58,18 +63,19 @@ public class Server {
         return "Guest " + index;
     }
 
-    public void broadcast(String message) {
+    public void broadcast(String message, List<String> names) {
 
-        for (ClientHandler client : clientList.values()) {
-            client.writeMessage(message);
+        for (String name : names) {
+            clientList.get(name).writeMessage(message);
         }
+
     }
 
     public void whisper(String name, String word) {
 
-       ClientHandler client = clientList.get(name);
+        ClientHandler client = clientList.get(name);
 
-       client.writeMessage(word);
+        client.writeMessage(word);
     }
 
 
@@ -79,9 +85,6 @@ public class Server {
         private PrintWriter toClients;
         private BufferedReader fromClients;
         private Decoder decoder;
-
-        private String name;
-        private String word;
 
         ClientHandler(Socket clientSocket) {
             this.connection = clientSocket;
@@ -103,16 +106,9 @@ public class Server {
                     String message = fromClients.readLine();
                     System.err.println("MESSAGE: " + message);
 
-                    if (message.equalsIgnoreCase(GameCommand.QUIT)) {
-                        broadcast("Player disconnected.");
-                        break;
-                    }
-
-                    if (message.equalsIgnoreCase(GameCommand.CHANGE_NAME)) {
-                        name = fromClients.readLine();
+                    if (message == null) {
                         continue;
                     }
-
                     decoder.decoder(message);
                 }
             } catch (IOException e) {
@@ -139,9 +135,7 @@ public class Server {
         void writeMessage(String message) {
             toClients.println(message);
         }
-
     }
-
 }
 
 
