@@ -48,13 +48,12 @@ public class Server {
                 clientList.put(clientName, handler);
 
                 game.addPlayer(clientName);
-
                 service.submit(handler);
-                System.out.println("Connection with new client @ " + clientSocket + "\n");
                 game.notifyAll();
             }
         }
     }
+
 
     private String generateName() {
         index++;
@@ -66,13 +65,11 @@ public class Server {
         for (String name : names) {
             clientList.get(name).writeMessage(message);
         }
-
     }
 
     public void whisper(String name, String word) {
 
         ClientHandler client = clientList.get(name);
-
         client.writeMessage(word);
     }
 
@@ -84,10 +81,12 @@ public class Server {
         private BufferedReader fromClients;
         private Decoder decoder;
 
+
         ClientHandler(Socket clientSocket) throws IOException {
+
             this.connection = clientSocket;
-            decoder = new Decoder(game);
-            toClients = new PrintWriter(connection.getOutputStream(), true);
+            this.decoder = new Decoder(game);
+            this.toClients = new PrintWriter(connection.getOutputStream(), true);
         }
 
 
@@ -96,8 +95,7 @@ public class Server {
 
             try {
 
-                fromClients = new BufferedReader(
-                        new InputStreamReader(connection.getInputStream()));
+                fromClients = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
                 while (true) {
 
@@ -107,8 +105,10 @@ public class Server {
                     if (message == null || message.isEmpty()) {
                         continue;
                     }
+
                     decoder.decoder(message);
                 }
+
             } catch (IOException e) {
                 e.printStackTrace();
 
@@ -121,6 +121,7 @@ public class Server {
         void stop() {
 
             try {
+
                 clientList.remove(this);
                 connection.close();
 

@@ -1,6 +1,6 @@
 package org.academiadecodigo.haltistas;
 
-public final class GameCommand {
+public class GameCommand {
 
     public static final String QUIT = "/quit";
     public static final String CHANGE_NAME = "/name";

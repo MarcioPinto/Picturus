@@ -5,19 +5,22 @@ import org.academiadecodigo.haltistas.server.Server;
 import java.util.*;
 
 public class PicturusGame implements Runnable {
-    //needs to have a thread working in here as well
+
+
     private Server server;
     private List<String> playerList;
     private LinkedList<String> waitingQueue;
     private String gameWord;
     private int minPlayers = 3;
 
+
     public PicturusGame(Server server) {
 
         this.server = server;
         this.playerList = new ArrayList<>();
-        waitingQueue = new LinkedList<>();
+        this.waitingQueue = new LinkedList<>();
     }
+
 
     @Override
     public void run() {
@@ -49,14 +52,13 @@ public class PicturusGame implements Runnable {
                 }
 
                 server.broadcast(Encoder.info("Starting game!"), playerList); //just to start the game
-                System.out.println("AQUIAQUIAQUIA");
-                //different method...
+
                 notifyAll();
             }
             startingGame();
         }
-
     }
+
 
     private void startingGame() {
         wordToDraw();
@@ -95,6 +97,7 @@ public class PicturusGame implements Runnable {
 
 
     public void drawingPlayer() {
+
         Collections.shuffle(playerList);
 
         String toSend = Encoder.activePlayer(gameWord);

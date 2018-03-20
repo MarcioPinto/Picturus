@@ -2,13 +2,16 @@ package org.academiadecodigo.haltistas.server;
 
 import org.academiadecodigo.haltistas.server.game.PicturusGame;
 
+
 public class Decoder {
 
     private PicturusGame game;
 
+
     public Decoder(PicturusGame game) {
         this.game = game;
     }
+
 
     public void decoder(String message) {
 
@@ -23,11 +26,11 @@ public class Decoder {
                 message = message.replaceFirst(splitedMessage[0], "");
                 message = message.substring(message.indexOf(" ") + 1);
 
-                System.out.println("CAHT " + message);
                 game.wordCheck(message);
                 break;
 
             case "/DRAW/":
+
                 message = message.replaceFirst(splitedMessage[0], "");
                 message = message.substring(message.indexOf(" ") + 1);
 
@@ -35,7 +38,6 @@ public class Decoder {
                 break;
 
             default:
-
                 System.err.println("the command on the message is fuck up");
         }
     }
