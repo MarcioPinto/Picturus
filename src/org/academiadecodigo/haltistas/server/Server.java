@@ -1,6 +1,5 @@
 package org.academiadecodigo.haltistas.server;
 
-import org.academiadecodigo.haltistas.GameCommand;
 import org.academiadecodigo.haltistas.server.game.PicturusGame;
 
 import java.io.BufferedReader;
@@ -50,7 +49,6 @@ public class Server {
 
                 game.addPlayer(clientName);
 
-                System.out.println(clientName);
                 service.submit(handler);
                 System.out.println("Connection with new client @ " + clientSocket + "\n");
                 game.notifyAll();
@@ -86,9 +84,10 @@ public class Server {
         private BufferedReader fromClients;
         private Decoder decoder;
 
-        ClientHandler(Socket clientSocket) {
+        ClientHandler(Socket clientSocket) throws IOException {
             this.connection = clientSocket;
             decoder = new Decoder(game);
+            toClients = new PrintWriter(connection.getOutputStream(), true);
         }
 
 
@@ -99,14 +98,13 @@ public class Server {
 
                 fromClients = new BufferedReader(
                         new InputStreamReader(connection.getInputStream()));
-                toClients = new PrintWriter(connection.getOutputStream(), true);
 
                 while (true) {
 
                     String message = fromClients.readLine();
                     System.err.println("MESSAGE: " + message);
 
-                    if (message == null) {
+                    if (message == null || message.isEmpty()) {
                         continue;
                     }
                     decoder.decoder(message);
