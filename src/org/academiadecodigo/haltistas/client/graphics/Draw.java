@@ -17,22 +17,26 @@ public class Draw {
 
     private List<Text> history;
 
-    private boolean canDraw;
+    private boolean canWrite;
 
     public Draw(Client client) {
         this.client = client;
         this.messageToSend = "";
 
-        sendMessage = new Text(420, 400, messageToSend);
+        sendMessage = new Text(420, 390, messageToSend);
         sendMessage.draw();
 
         history = new LinkedList<>();
 
-        canDraw = true;
+        canWrite = true;
     }
 
 
-    public void drawToSend(char key) {
+    public void write(char key) {
+
+        if (!canWrite){
+            return;
+        }
         messageToSend += key;
         sendMessage.setText(messageToSend);
     }
@@ -43,6 +47,7 @@ public class Draw {
         String finalMessage = GameCommand.CHAT + messageToSend;
         client.send(finalMessage);
         messageToSend = "";
+        sendMessage.setText(messageToSend);
     }
 
 
@@ -54,20 +59,21 @@ public class Draw {
             text.translate(0, -20);
         }
 
-        receivedMessage = new Text(420, 380, message);
+        receivedMessage = new Text(420, 370, message);
         history.add(receivedMessage);
         receivedMessage.draw();
     }
 
 
-    //TODO corrigir backspace para quando nao tem nada para apagar
-
     public void delete() {
+        if (messageToSend.equals("")) {
+            return;
+        }
         messageToSend = messageToSend.substring(0, messageToSend.length() - 1);
         sendMessage.setText(messageToSend);
     }
 
-    public void setCanDraw(boolean canDraw) {
-        this.canDraw = canDraw;
+    public void setCanWrite(boolean canWrite) {
+        this.canWrite = canWrite;
     }
 }

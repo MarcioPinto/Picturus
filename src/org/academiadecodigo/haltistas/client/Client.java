@@ -1,8 +1,10 @@
 package org.academiadecodigo.haltistas.client;
 
+import org.academiadecodigo.haltistas.client.controllers.MouseController;
 import org.academiadecodigo.haltistas.client.graphics.Draw;
 import org.academiadecodigo.haltistas.client.graphics.Pencil;
 import org.academiadecodigo.simplegraphics.graphics.Canvas;
+import org.academiadecodigo.simplegraphics.graphics.Line;
 import org.academiadecodigo.simplegraphics.graphics.Rectangle;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,6 +27,8 @@ public class Client {
     private Draw draw;
     private Pencil pencil;
 
+    private MouseController mouseController;
+
 
     public Client(String hostName, int portNumber) {
         this.hostName = hostName;
@@ -32,6 +36,10 @@ public class Client {
 
         draw = new Draw(this);
         pencil = new Pencil();
+    }
+
+    public void setMouseController(MouseController mouseController) {
+        this.mouseController = mouseController;
     }
 
     //init communication
@@ -44,6 +52,11 @@ public class Client {
 
         Rectangle rectangle = new Rectangle(PADDING, PADDING, 400, 400);
         rectangle.draw();
+        Rectangle chatRectangle = new Rectangle(PADDING, PADDING, 900, 400);
+        chatRectangle.draw();
+
+        Line chatLine = new Line(410, 390, 910, 390);
+        chatLine.draw();
 
         new Thread(new InputHandler()).start();
 
@@ -56,7 +69,7 @@ public class Client {
 
 
     public void drawToSend(char key) {
-        draw.drawToSend(key);
+        draw.write(key);
     }
 
     public void drawDelete() {
@@ -132,13 +145,21 @@ public class Client {
 
                 case "/ACTIVE/":
 
-                    pencil.setCanDraw(true);
-                    draw.setCanDraw(false);
+                    mouseController.setCanDraw(true);
+                    draw.setCanWrite(false);
 
                     message = message.replaceFirst(str[0], "");
                     message = message.substring(message.indexOf(" ") + 1);
 
                     draw.receive("WORD IN PLAY! DRAW THIS SHIT: " + message);
+                    break;
+
+                case "/INFO/":
+
+                    message = message.replaceFirst(str[0], "");
+                    message = message.substring(message.indexOf(" ") + 1);
+
+                    draw.receive(message);
             }
         }
     }

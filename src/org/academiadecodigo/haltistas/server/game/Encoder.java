@@ -18,4 +18,9 @@ public class Encoder {
         return "/ACTIVE/ " + message;
     }
 
+    public static String info(String message){
+
+        return "/INFO/ " + message;
+    }
+
 }

@@ -16,19 +16,15 @@ public class Pencil {
     private double XFin;
     private double YFin;
     private List<Line> lines;
-    private boolean canDraw;
+
 
     public Pencil() {
         lines = new LinkedList<>();
-        //TODO change to false
-        canDraw = true;
+
     }
 
     public void draw(double XIni, double YIni, double XFin, double YFin) {
 
-        if (!canDraw){
-            return;
-        }
 
         this.XIni = XIni;
         this.YIni = YIni;
@@ -52,7 +48,4 @@ public class Pencil {
         lines.clear();
     }
 
-    public void setCanDraw(boolean canDraw) {
-        this.canDraw = canDraw;
-    }
 }

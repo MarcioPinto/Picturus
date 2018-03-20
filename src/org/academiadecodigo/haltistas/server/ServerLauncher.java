@@ -14,12 +14,12 @@ public class ServerLauncher {
         int port = Integer.parseInt(args[0]);
 
         try {
+
             Server server = new Server(port);
             server.start();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }

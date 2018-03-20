@@ -20,6 +20,7 @@ public class ClientLauncher {
         MouseController mouseController = new MouseController(client);
         mouseController.init();
 
+        client.setMouseController(mouseController);
         try {
             client.init();
 
