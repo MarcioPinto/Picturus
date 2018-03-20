@@ -12,6 +12,7 @@ public class PicturusGame implements Runnable {
     private LinkedList<String> waitingQueue;
     private String gameWord;
     private int minPlayers = 3;
+    private Time time;
 
 
     public PicturusGame(Server server) {
@@ -19,6 +20,7 @@ public class PicturusGame implements Runnable {
         this.server = server;
         this.playerList = new ArrayList<>();
         this.waitingQueue = new LinkedList<>();
+        Time time = new Time();
     }
 
 

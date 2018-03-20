@@ -12,8 +12,8 @@ public class Time {
     private final static int ROUND_TIME = 60;
     private final static int WAIT_TIME = 30;
 
-    Time(Timer timer) {
-        this.timer = timer;
+    Time() {
+        timer = new Timer();
 
         timerTask = new TimerTask() {
 
