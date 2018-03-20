@@ -1,7 +1,7 @@
 package org.academiadecodigo.haltistas.client;
 
 import org.academiadecodigo.haltistas.client.controllers.MouseController;
-import org.academiadecodigo.haltistas.client.graphics.Draw;
+import org.academiadecodigo.haltistas.client.graphics.Chat;
 import org.academiadecodigo.haltistas.client.graphics.Pencil;
 import org.academiadecodigo.simplegraphics.graphics.Canvas;
 import org.academiadecodigo.simplegraphics.graphics.Line;
@@ -25,7 +25,7 @@ public class Client {
     private BufferedReader fromServer;
     private PrintWriter toServer;
 
-    private Draw draw;
+    private Chat chat;
     private Pencil pencil;
 
     private MouseController mouseController;
@@ -35,13 +35,15 @@ public class Client {
         this.hostName = hostName;
         this.portNumber = portNumber;
 
-        draw = new Draw(this);
-        pencil = new Pencil();
+        this.chat = new Chat(this);
+        this.pencil = new Pencil();
     }
+
 
     public void setMouseController(MouseController mouseController) {
         this.mouseController = mouseController;
     }
+
 
     //init communication
     public void init() throws IOException {
@@ -51,11 +53,13 @@ public class Client {
         toServer = new PrintWriter(socket.getOutputStream(), true);
         fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
+
+        //TODO create method to initiate canvas
+
         Rectangle rectangle = new Rectangle(PADDING, PADDING, 400, 400);
         rectangle.draw();
         Rectangle chatRectangle = new Rectangle(PADDING, PADDING, 900, 400);
         chatRectangle.draw();
-
         Line chatLine = new Line(410, 390, 910, 390);
         chatLine.draw();
 
@@ -64,26 +68,29 @@ public class Client {
     }
 
 
-    public void send(String message) {
+    public void sendToServer(String message) {
         toServer.println(message);
     }
 
 
     public void drawToSend(char key) {
-        draw.write(key);
+        chat.write(key);
     }
+
 
     public void drawDelete() {
-        draw.delete();
+        chat.delete();
     }
 
+
     public void drawSend() {
-        draw.send();
+        chat.send();
     }
 
 
     private class InputHandler implements Runnable {
 
+    //TODO close socket
 
         @Override
         public void run() {
@@ -103,7 +110,7 @@ public class Client {
                         continue;
                     }
 
-                    receivedMessage(message);
+                    receivedFromServer(message);
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -112,7 +119,8 @@ public class Client {
         }
 
 
-        private void receivedMessage(String message) {
+        //TODO change this method to utility thing
+        private void receivedFromServer(String message) {
 
 
             String[] str = message.split(" ");
@@ -120,6 +128,8 @@ public class Client {
             switch (str[0]) {
 
                 case "/DRAW/":
+
+        //TODO create method to do the message replace thing
 
                     message = message.replaceFirst(str[0], "");
                     message = message.substring(message.indexOf(" ") + 1);
@@ -139,19 +149,21 @@ public class Client {
                     message = message.replaceFirst(str[0], "");
                     message = message.substring(message.indexOf(" ") + 1);
 
-                    draw.receive(message);
+                    System.out.println("ola - " + message);
+
+                    chat.receive(message);
                     break;
 
 
                 case "/ACTIVE/":
 
                     mouseController.setCanDraw(true);
-                    draw.setCanWrite(false);
+                    chat.setCanWrite(false);
 
                     message = message.replaceFirst(str[0], "");
                     message = message.substring(message.indexOf(" ") + 1);
 
-                    draw.receive("WORD IN PLAY! DRAW THIS SHIT: " + message);
+                    chat.receive("WORD IN PLAY! DRAW THIS SHIT: " + message);
                     break;
 
                 case "/INFO/":
@@ -159,7 +171,13 @@ public class Client {
                     message = message.replaceFirst(str[0], "");
                     message = message.substring(message.indexOf(" ") + 1);
 
-                    draw.receive(message);
+                    chat.receive(message);
+                    break;
+
+                case "/RESET/":
+                    //TODO reset
+
+                    break;
             }
         }
     }

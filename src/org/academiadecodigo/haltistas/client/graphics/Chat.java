@@ -6,35 +6,38 @@ import org.academiadecodigo.simplegraphics.graphics.Text;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Draw {
+//TODO get ride of magic numbers
+
+public class Chat {
 
     private Client client;
 
     private String messageToSend;
 
     private Text sendMessage;
-    private Text receivedMessage;
 
     private List<Text> history;
 
     private boolean canWrite;
 
-    public Draw(Client client) {
+
+    public Chat(Client client) {
+
         this.client = client;
         this.messageToSend = "";
 
-        sendMessage = new Text(420, 390, messageToSend);
-        sendMessage.draw();
+        this.sendMessage = new Text(420, 390, messageToSend);
+        this.sendMessage.draw();
 
-        history = new LinkedList<>();
+        this.history = new LinkedList<>();
 
-        canWrite = true;
+        this.canWrite = true;
     }
 
 
     public void write(char key) {
 
-        if (!canWrite){
+        if (!canWrite) {
             return;
         }
         messageToSend += key;
@@ -45,7 +48,7 @@ public class Draw {
     public void send() {
 
         String finalMessage = "/CHAT/ " + messageToSend;
-        client.send(finalMessage);
+        client.sendToServer(finalMessage);
         messageToSend = "";
         sendMessage.setText(messageToSend);
     }
@@ -53,12 +56,11 @@ public class Draw {
 
     public void receive(String message) {
 
-
         for (Text text : history) {
             text.translate(0, -20);
         }
 
-        receivedMessage = new Text(420, 370, message);
+        Text receivedMessage = new Text(420, 370, message);
         history.add(receivedMessage);
         receivedMessage.draw();
     }
@@ -68,6 +70,7 @@ public class Draw {
         if (messageToSend.equals("")) {
             return;
         }
+
         messageToSend = messageToSend.substring(0, messageToSend.length() - 1);
         sendMessage.setText(messageToSend);
     }

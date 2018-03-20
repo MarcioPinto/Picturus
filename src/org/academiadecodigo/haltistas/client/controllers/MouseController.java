@@ -12,7 +12,6 @@ public class MouseController implements MouseHandler {
     public static final double MOUSE_ADJST_X = -7;
     public static final double MOUSE_ADJST_Y = -30;
 
-
     private Client client;
 
     private double XIni;
@@ -74,7 +73,9 @@ public class MouseController implements MouseHandler {
     @Override
     public void mouseDragged(MouseEvent mouseEvent) {
 
-        if (!canDraw){
+        //TODO change this to client class
+
+        if (!canDraw) {
             return;
         }
 
@@ -85,18 +86,16 @@ public class MouseController implements MouseHandler {
             return;
         }
 
-        String str = "/DRAW/" + " " + String.valueOf(XIni) + " " + String.valueOf(YIni) + " " +
+        String str = "/DRAW/ " + String.valueOf(XIni) + " " + String.valueOf(YIni) + " " +
                 String.valueOf(mouseEvent.getX()) + " " + String.valueOf(mouseEvent.getY()) + "\n";
         System.out.println(str);
 
 
-        client.send(str);
+        client.sendToServer(str);
 
         XIni = mouseEvent.getX();
         YIni = mouseEvent.getY();
 
-
-        //System.out.println(mouseEvent);
     }
 
     public void setCanDraw(boolean canDraw) {
