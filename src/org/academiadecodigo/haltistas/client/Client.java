@@ -4,6 +4,7 @@ import org.academiadecodigo.haltistas.client.controllers.MouseController;
 import org.academiadecodigo.haltistas.client.graphics.Draw;
 import org.academiadecodigo.haltistas.client.graphics.Pencil;
 import org.academiadecodigo.simplegraphics.graphics.Canvas;
+import org.academiadecodigo.simplegraphics.graphics.Line;
 import org.academiadecodigo.simplegraphics.graphics.Rectangle;
 
 import java.io.BufferedReader;
@@ -52,6 +53,11 @@ public class Client {
 
         Rectangle rectangle = new Rectangle(PADDING, PADDING, 400, 400);
         rectangle.draw();
+        Rectangle chatRectangle = new Rectangle(PADDING, PADDING, 900, 400);
+        chatRectangle.draw();
+
+        Line chatLine = new Line(410, 390, 910, 390);
+        chatLine.draw();
 
         new Thread(new InputHandler()).start();
 
