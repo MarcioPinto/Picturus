@@ -88,10 +88,17 @@ public class Client {
         chat.send();
     }
 
+    public void closeSocket(){
+
+        try {
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private class InputHandler implements Runnable {
-
-    //TODO close socket
 
         @Override
         public void run() {
