@@ -48,13 +48,17 @@ public class Client {
     //init communication
     public void init() throws IOException {
 
+        canvasInit();
+
         socket = new Socket(hostName, portNumber);
 
         toServer = new PrintWriter(socket.getOutputStream(), true);
         fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
+        new Thread(new InputHandler()).start();
+    }
 
-        //TODO create method to initiate canvas
+    private void canvasInit(){
 
         Rectangle rectangle = new Rectangle(PADDING, PADDING, 400, 400);
         rectangle.draw();
@@ -62,9 +66,6 @@ public class Client {
         chatRectangle.draw();
         Line chatLine = new Line(410, 390, 910, 390);
         chatLine.draw();
-
-        new Thread(new InputHandler()).start();
-
     }
 
 
