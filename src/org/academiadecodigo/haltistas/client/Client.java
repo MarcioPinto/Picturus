@@ -12,21 +12,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+
 public class Client {
-
-    //TODO create constants class
-
-    private final static int PADDING = 10;
-    public final static int DRAWING_BOARD_X = 400;
-    public final static int DRAWING_BOARD_Y = 400;
-    public final static int CHAT_BOARD_X = 500;
-    public final static int CHAT_BOARD_Y = 400;
-
-    public final static int CHAT_LINE_INI_X = 410;
-    public final static int CHAT_LINE_INI_Y = 390;
-    public final static int CHAT_LINE_FIN_X = 910;
-    public final static int CHAT_LINE_FIN_Y = 390;
-
 
     private String hostName;
     private int portNumber;
@@ -71,11 +58,16 @@ public class Client {
 
     private void canvasInit() {
 
-        Rectangle rectangle = new Rectangle(PADDING, PADDING, DRAWING_BOARD_X, DRAWING_BOARD_Y);
+        Rectangle rectangle = new Rectangle(Constants.PADDING, Constants.PADDING,
+                Constants.DRAWING_BOARD_X, Constants.DRAWING_BOARD_Y);
         rectangle.draw();
-        Rectangle chatRectangle = new Rectangle(PADDING + DRAWING_BOARD_X, PADDING, CHAT_BOARD_X, CHAT_BOARD_Y);
+
+        Rectangle chatRectangle = new Rectangle(Constants.PADDING, Constants.PADDING,
+                Constants.CHAT_BOARD_X, Constants.DRAWING_BOARD_Y);
         chatRectangle.draw();
-        Line chatLine = new Line(CHAT_LINE_INI_X, CHAT_LINE_INI_Y, CHAT_LINE_FIN_X, CHAT_LINE_FIN_Y);
+
+        Line chatLine = new Line(Constants.CHAT_LINE_INI_X, Constants.CHAT_LINE_INI_Y,
+                Constants.CHAT_LINE_FIN_X, Constants.CHAT_LINE_FIN_Y);
         chatLine.draw();
     }
 
@@ -108,7 +100,7 @@ public class Client {
         }
     }
 
-    private void reset(){
+    private void reset() {
 
         mouseController.setCanDraw(false);
         chat.setCanWrite(true);
