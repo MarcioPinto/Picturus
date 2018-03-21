@@ -62,8 +62,8 @@ public class Client {
                 Constants.DRAWING_BOARD_X, Constants.DRAWING_BOARD_Y);
         rectangle.draw();
 
-        Rectangle chatRectangle = new Rectangle(Constants.PADDING, Constants.PADDING,
-                Constants.CHAT_BOARD_X, Constants.DRAWING_BOARD_Y);
+        Rectangle chatRectangle = new Rectangle(Constants.CHAT_PADDING_X, Constants.PADDING,
+                Constants.CHAT_BOARD_X, Constants.CHAT_BOARD_Y);
         chatRectangle.draw();
 
         Line chatLine = new Line(Constants.CHAT_LINE_INI_X, Constants.CHAT_LINE_INI_Y,

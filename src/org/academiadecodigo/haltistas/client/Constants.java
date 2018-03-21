@@ -5,6 +5,8 @@ public class Constants {
     public final static int PADDING = 10;
     public final static int DRAWING_BOARD_X = 400;
     public final static int DRAWING_BOARD_Y = 400;
+
+    public final static int CHAT_PADDING_X = PADDING + DRAWING_BOARD_X;
     public final static int CHAT_BOARD_X = 500;
     public final static int CHAT_BOARD_Y = 400;
 
