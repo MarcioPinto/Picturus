@@ -52,7 +52,6 @@ public class KeyboardController implements KeyboardHandler, Runnable {
         if (prohibitedChar.contains(c)) {
             return;
         }
-        System.out.println(c);
         client.drawToSend(c);
     }
 
