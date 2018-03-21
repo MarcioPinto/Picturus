@@ -13,6 +13,7 @@ public class PicturusGame implements Runnable {
     private LinkedList<String> waitingQueue;
     private String gameWord;
     private int minPlayers;
+    private Time timer ;
 
 
     public PicturusGame(Server server) {
