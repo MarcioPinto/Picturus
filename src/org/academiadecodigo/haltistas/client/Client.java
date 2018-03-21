@@ -108,6 +108,14 @@ public class Client {
         }
     }
 
+    private void reset(){
+
+        mouseController.setCanDraw(false);
+        chat.setCanWrite(true);
+
+        pencil.deleteAll();
+    }
+
 
     private class InputHandler implements Runnable {
 
@@ -140,14 +148,11 @@ public class Client {
         //TODO change this method to utility thing
         private void receivedFromServer(String message) {
 
-
             String[] str = message.split(" ");
 
             switch (str[0]) {
 
                 case "/DRAW/":
-
-                    //TODO create method to do the message replace thing
 
                     message = messagePeel(str[0], message);
 
@@ -187,8 +192,7 @@ public class Client {
                     break;
 
                 case "/RESET/":
-                    //TODO reset
-
+                    reset();
                     break;
             }
         }
