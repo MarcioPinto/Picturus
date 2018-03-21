@@ -7,10 +7,12 @@ import java.io.IOException;
 
 public class ClientLauncher {
 
+    //TODO substitute printStackTrace for serr's
+
     public static void main(String[] args) {
 
         String hostName = "localhost";
-        int portNumber = 55555 ;
+        int portNumber = 55555;
 
         Client client = new Client(hostName, portNumber);
 
@@ -21,12 +23,14 @@ public class ClientLauncher {
         mouseController.init();
 
         client.setMouseController(mouseController);
+
         try {
+
             client.init();
 
         } catch (IOException e) {
             e.printStackTrace();
+
         }
     }
-
 }

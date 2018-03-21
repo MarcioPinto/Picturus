@@ -1,23 +1,42 @@
 package org.academiadecodigo.haltistas.client.controllers;
 
+import com.sun.org.apache.regexp.internal.RE;
 import org.academiadecodigo.haltistas.client.Client;
 import org.academiadecodigo.simplegraphics.keyboard.Keyboard;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardEvent;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardEventType;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardHandler;
 
+import java.awt.event.KeyEvent;
+import java.util.LinkedList;
+import java.util.List;
+
+
 public class KeyboardController implements KeyboardHandler, Runnable {
 
 
     private Client client;
+    private List<Character> prohibitedChar;
 
     public KeyboardController(Client client) {
         this.client = client;
+        this.prohibitedChar = new LinkedList<>();
+    }
+
+
+    public void addProhibitedChars() {
+        prohibitedChar.add(KeyEvent.CHAR_UNDEFINED);
+        prohibitedChar.add('´');
+        prohibitedChar.add('`');
+        prohibitedChar.add('~');
+        prohibitedChar.add('^');
     }
 
 
     @Override
     public void run() {
+
+        addProhibitedChars();
 
         Keyboard k = new Keyboard(this);
 
@@ -30,6 +49,10 @@ public class KeyboardController implements KeyboardHandler, Runnable {
 
     @Override
     public void keyPressed(char c) {
+        if (prohibitedChar.contains(c)) {
+            return;
+        }
+        System.out.println(c);
         client.drawToSend(c);
     }
 

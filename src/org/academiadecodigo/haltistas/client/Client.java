@@ -1,20 +1,21 @@
 package org.academiadecodigo.haltistas.client;
 
 import org.academiadecodigo.haltistas.client.controllers.MouseController;
-import org.academiadecodigo.haltistas.client.graphics.Draw;
+import org.academiadecodigo.haltistas.client.graphics.Chat;
 import org.academiadecodigo.haltistas.client.graphics.Pencil;
-import org.academiadecodigo.simplegraphics.graphics.Canvas;
+import org.academiadecodigo.haltistas.client.utils.Constants;
+import org.academiadecodigo.haltistas.client.utils.Receive;
 import org.academiadecodigo.simplegraphics.graphics.Line;
 import org.academiadecodigo.simplegraphics.graphics.Rectangle;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class Client {
 
-    private final static int PADDING = 10;
+public class Client {
 
     private String hostName;
     private int portNumber;
@@ -24,7 +25,7 @@ public class Client {
     private BufferedReader fromServer;
     private PrintWriter toServer;
 
-    private Draw draw;
+    private Chat chat;
     private Pencil pencil;
 
     private MouseController mouseController;
@@ -34,55 +35,100 @@ public class Client {
         this.hostName = hostName;
         this.portNumber = portNumber;
 
-        draw = new Draw(this);
-        pencil = new Pencil();
+        this.chat = new Chat(this);
+        this.pencil = new Pencil();
     }
+
 
     public void setMouseController(MouseController mouseController) {
         this.mouseController = mouseController;
     }
 
+
     //init communication
     public void init() throws IOException {
+
+        canvasInit();
 
         socket = new Socket(hostName, portNumber);
 
         toServer = new PrintWriter(socket.getOutputStream(), true);
         fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-        Rectangle rectangle = new Rectangle(PADDING, PADDING, 400, 400);
+        new Thread(new InputHandler(this)).start();
+    }
+
+    private void canvasInit() {
+
+        Rectangle rectangle = new Rectangle(Constants.PADDING, Constants.PADDING,
+                Constants.DRAWING_BOARD_X, Constants.DRAWING_BOARD_Y);
         rectangle.draw();
-        Rectangle chatRectangle = new Rectangle(PADDING, PADDING, 900, 400);
+
+        Rectangle chatRectangle = new Rectangle(Constants.CHAT_PADDING_X, Constants.PADDING,
+                Constants.CHAT_BOARD_X, Constants.CHAT_BOARD_Y);
         chatRectangle.draw();
 
-        Line chatLine = new Line(410, 390, 910, 390);
+        Line chatLine = new Line(Constants.CHAT_LINE_INI_X, Constants.CHAT_LINE_INI_Y,
+                Constants.CHAT_LINE_FIN_X, Constants.CHAT_LINE_FIN_Y);
         chatLine.draw();
-
-        new Thread(new InputHandler()).start();
-
     }
 
 
-    public void send(String message) {
+    public void sendToServer(String message) {
         toServer.println(message);
     }
 
 
     public void drawToSend(char key) {
-        draw.write(key);
+        chat.write(key);
     }
+
 
     public void drawDelete() {
-        draw.delete();
+        chat.delete();
     }
+
 
     public void drawSend() {
-        draw.send();
+        chat.send();
     }
 
+    public void closeSocket() {
+
+        try {
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void reset() {
+
+        mouseController.setCanDraw(false);
+        chat.setCanWrite(true);
+
+        pencil.deleteAll();
+    }
+
+    public Chat getChat() {
+        return chat;
+    }
+
+    public Pencil getPencil() {
+        return pencil;
+    }
+
+    public MouseController getMouseController() {
+        return mouseController;
+    }
 
     private class InputHandler implements Runnable {
 
+        private Client client;
+
+        public InputHandler(Client client) {
+            this.client = client;
+        }
 
         @Override
         public void run() {
@@ -92,7 +138,6 @@ public class Client {
                 try {
 
                     String message = fromServer.readLine();
-                    System.out.println("Shapes in Canvas: " + Canvas.getInstance().getShapes().size());
 
                     if (message == null) {
                         break;
@@ -102,64 +147,11 @@ public class Client {
                         continue;
                     }
 
-                    receivedMessage(message);
+                    Receive.receivedFromServer(message, pencil, chat, mouseController, client);
 
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
-        }
-
-
-        private void receivedMessage(String message) {
-
-
-            String[] str = message.split(" ");
-
-            switch (str[0]) {
-
-                case "/DRAW/":
-
-                    message = message.replaceFirst(str[0], "");
-                    message = message.substring(message.indexOf(" ") + 1);
-
-                    String[] point = message.split(" ");
-
-                    double IniX = Double.parseDouble(point[0]);
-                    double IniY = Double.parseDouble(point[1]);
-                    double FinX = Double.parseDouble(point[2]);
-                    double FinY = Double.parseDouble(point[3]);
-
-                    pencil.draw(IniX, IniY, FinX, FinY);
-                    break;
-
-                case "/CHAT/":
-
-
-                    message = message.replaceFirst(str[0], "");
-                    message = message.substring(message.indexOf(" ") + 1);
-
-                    draw.receive(message);
-                    break;
-
-
-                case "/ACTIVE/":
-
-                    mouseController.setCanDraw(true);
-                    draw.setCanWrite(false);
-
-                    message = message.replaceFirst(str[0], "");
-                    message = message.substring(message.indexOf(" ") + 1);
-
-                    draw.receive("WORD IN PLAY! DRAW THIS SHIT: " + message);
-                    break;
-
-                case "/INFO/":
-
-                    message = message.replaceFirst(str[0], "");
-                    message = message.substring(message.indexOf(" ") + 1);
-
-                    draw.receive(message);
             }
         }
     }

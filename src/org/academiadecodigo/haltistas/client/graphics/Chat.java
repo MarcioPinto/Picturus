@@ -1,40 +1,45 @@
 package org.academiadecodigo.haltistas.client.graphics;
 
-import org.academiadecodigo.haltistas.GameCommand;
 import org.academiadecodigo.haltistas.client.Client;
 import org.academiadecodigo.simplegraphics.graphics.Text;
+
 import java.util.LinkedList;
 import java.util.List;
 
-public class Draw {
+public class Chat {
+
+    private final int POSX_TEXT = 420;
+    private final int POSY_TEXT_TO_SEND = 390;
+
 
     private Client client;
 
     private String messageToSend;
 
     private Text sendMessage;
-    private Text receivedMessage;
 
     private List<Text> history;
 
     private boolean canWrite;
 
-    public Draw(Client client) {
+
+    public Chat(Client client) {
+
         this.client = client;
         this.messageToSend = "";
 
-        sendMessage = new Text(420, 390, messageToSend);
-        sendMessage.draw();
+        this.sendMessage = new Text(POSX_TEXT, POSY_TEXT_TO_SEND, messageToSend);
+        this.sendMessage.draw();
 
-        history = new LinkedList<>();
+        this.history = new LinkedList<>();
 
-        canWrite = true;
+        this.canWrite = true;
     }
 
 
     public void write(char key) {
 
-        if (!canWrite){
+        if (!canWrite) {
             return;
         }
         messageToSend += key;
@@ -44,8 +49,8 @@ public class Draw {
 
     public void send() {
 
-        String finalMessage = GameCommand.CHAT + messageToSend;
-        client.send(finalMessage);
+        String finalMessage = "/CHAT/ " + messageToSend;
+        client.sendToServer(finalMessage);
         messageToSend = "";
         sendMessage.setText(messageToSend);
     }
@@ -53,13 +58,15 @@ public class Draw {
 
     public void receive(String message) {
 
-        System.out.println(" CHATTTTT " + message);
+        int ypixToTranslate = -20;
+
+        int posyTextToReceive = POSY_TEXT_TO_SEND - ypixToTranslate;
 
         for (Text text : history) {
-            text.translate(0, -20);
+            text.translate(0, ypixToTranslate);
         }
 
-        receivedMessage = new Text(420, 370, message);
+        Text receivedMessage = new Text(POSX_TEXT, posyTextToReceive, message);
         history.add(receivedMessage);
         receivedMessage.draw();
     }
@@ -69,6 +76,7 @@ public class Draw {
         if (messageToSend.equals("")) {
             return;
         }
+
         messageToSend = messageToSend.substring(0, messageToSend.length() - 1);
         sendMessage.setText(messageToSend);
     }
