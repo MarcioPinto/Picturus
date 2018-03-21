@@ -14,6 +14,8 @@ import java.net.Socket;
 
 public class Client {
 
+    //TODO create constants class
+
     private final static int PADDING = 10;
     public final static int DRAWING_BOARD_X = 400;
     public final static int DRAWING_BOARD_Y = 400;
@@ -67,7 +69,7 @@ public class Client {
         new Thread(new InputHandler()).start();
     }
 
-    private void canvasInit(){
+    private void canvasInit() {
 
         Rectangle rectangle = new Rectangle(PADDING, PADDING, DRAWING_BOARD_X, DRAWING_BOARD_Y);
         rectangle.draw();
@@ -97,7 +99,7 @@ public class Client {
         chat.send();
     }
 
-    public void closeSocket(){
+    public void closeSocket() {
 
         try {
             socket.close();
@@ -145,10 +147,9 @@ public class Client {
 
                 case "/DRAW/":
 
-        //TODO create method to do the message replace thing
+                    //TODO create method to do the message replace thing
 
-                    message = message.replaceFirst(str[0], "");
-                    message = message.substring(message.indexOf(" ") + 1);
+                    message = messagePeel(str[0], message);
 
                     String[] point = message.split(" ");
 
@@ -162,8 +163,7 @@ public class Client {
 
                 case "/CHAT/":
 
-                    message = message.replaceFirst(str[0], "");
-                    message = message.substring(message.indexOf(" ") + 1);
+                    message = messagePeel(str[0], message);
 
                     chat.receive(message);
                     break;
@@ -174,16 +174,14 @@ public class Client {
                     mouseController.setCanDraw(true);
                     chat.setCanWrite(false);
 
-                    message = message.replaceFirst(str[0], "");
-                    message = message.substring(message.indexOf(" ") + 1);
+                    message = messagePeel(str[0], message);
 
                     chat.receive("WORD IN PLAY! DRAW THIS SHIT: " + message);
                     break;
 
                 case "/INFO/":
 
-                    message = message.replaceFirst(str[0], "");
-                    message = message.substring(message.indexOf(" ") + 1);
+                    message = messagePeel(str[0], message);
 
                     chat.receive(message);
                     break;
@@ -193,6 +191,14 @@ public class Client {
 
                     break;
             }
+        }
+
+        private String messagePeel(String key, String message) {
+
+            message = message.replaceFirst(key, "");
+            message = message.substring(message.indexOf(" ") + 1);
+
+            return message;
         }
     }
 }
