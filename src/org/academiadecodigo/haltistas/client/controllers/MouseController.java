@@ -82,7 +82,6 @@ public class MouseController implements MouseHandler {
         count++;
 
         if (count <= 0 || count % 3 != 0) {
-            System.out.println("in here");
             return;
         }
 

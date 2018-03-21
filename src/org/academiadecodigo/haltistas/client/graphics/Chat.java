@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 //TODO get ride of magic numbers
+//TODO remove special keys characters
 
 public class Chat {
 

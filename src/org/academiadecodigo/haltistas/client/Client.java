@@ -3,7 +3,6 @@ package org.academiadecodigo.haltistas.client;
 import org.academiadecodigo.haltistas.client.controllers.MouseController;
 import org.academiadecodigo.haltistas.client.graphics.Chat;
 import org.academiadecodigo.haltistas.client.graphics.Pencil;
-import org.academiadecodigo.simplegraphics.graphics.Canvas;
 import org.academiadecodigo.simplegraphics.graphics.Line;
 import org.academiadecodigo.simplegraphics.graphics.Rectangle;
 
@@ -16,6 +15,16 @@ import java.net.Socket;
 public class Client {
 
     private final static int PADDING = 10;
+    public final static int DRAWING_BOARD_X = 400;
+    public final static int DRAWING_BOARD_Y = 400;
+    public final static int CHAT_BOARD_X = 500;
+    public final static int CHAT_BOARD_Y = 400;
+
+    public final static int CHAT_LINE_INI_X = 410;
+    public final static int CHAT_LINE_INI_Y = 390;
+    public final static int CHAT_LINE_FIN_X = 910;
+    public final static int CHAT_LINE_FIN_Y = 390;
+
 
     private String hostName;
     private int portNumber;
@@ -60,11 +69,11 @@ public class Client {
 
     private void canvasInit(){
 
-        Rectangle rectangle = new Rectangle(PADDING, PADDING, 400, 400);
+        Rectangle rectangle = new Rectangle(PADDING, PADDING, DRAWING_BOARD_X, DRAWING_BOARD_Y);
         rectangle.draw();
-        Rectangle chatRectangle = new Rectangle(PADDING, PADDING, 900, 400);
+        Rectangle chatRectangle = new Rectangle(PADDING + DRAWING_BOARD_X, PADDING, CHAT_BOARD_X, CHAT_BOARD_Y);
         chatRectangle.draw();
-        Line chatLine = new Line(410, 390, 910, 390);
+        Line chatLine = new Line(CHAT_LINE_INI_X, CHAT_LINE_INI_Y, CHAT_LINE_FIN_X, CHAT_LINE_FIN_Y);
         chatLine.draw();
     }
 
@@ -108,7 +117,6 @@ public class Client {
                 try {
 
                     String message = fromServer.readLine();
-                    System.out.println("Shapes in Canvas: " + Canvas.getInstance().getShapes().size());
 
                     if (message == null) {
                         break;
@@ -156,8 +164,6 @@ public class Client {
 
                     message = message.replaceFirst(str[0], "");
                     message = message.substring(message.indexOf(" ") + 1);
-
-                    System.out.println("ola - " + message);
 
                     chat.receive(message);
                     break;

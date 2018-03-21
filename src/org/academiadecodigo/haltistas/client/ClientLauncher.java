@@ -31,8 +31,6 @@ public class ClientLauncher {
         } catch (IOException e) {
             e.printStackTrace();
 
-        } finally {
-            client.closeSocket();
         }
     }
 }
