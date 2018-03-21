@@ -6,10 +6,13 @@ import org.academiadecodigo.simplegraphics.graphics.Text;
 import java.util.LinkedList;
 import java.util.List;
 
-//TODO get ride of magic numbers
 //TODO remove special keys characters
 
 public class Chat {
+
+    private final int POSX_TEXT = 420;
+    private final int POSY_TEXT_TO_SEND = 390;
+
 
     private Client client;
 
@@ -27,7 +30,7 @@ public class Chat {
         this.client = client;
         this.messageToSend = "";
 
-        this.sendMessage = new Text(420, 390, messageToSend);
+        this.sendMessage = new Text(POSX_TEXT, POSY_TEXT_TO_SEND, messageToSend);
         this.sendMessage.draw();
 
         this.history = new LinkedList<>();
@@ -57,11 +60,15 @@ public class Chat {
 
     public void receive(String message) {
 
+        int ypixToTranslate = -20;
+
+        int posyTextToReceive = POSY_TEXT_TO_SEND - ypixToTranslate;
+
         for (Text text : history) {
-            text.translate(0, -20);
+            text.translate(0, ypixToTranslate);
         }
 
-        Text receivedMessage = new Text(420, 370, message);
+        Text receivedMessage = new Text(POSX_TEXT, posyTextToReceive, message);
         history.add(receivedMessage);
         receivedMessage.draw();
     }
