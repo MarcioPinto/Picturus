@@ -30,7 +30,6 @@ public class Client {
 
     private MouseController mouseController;
 
-
     public Client(String hostName, int portNumber) {
         this.hostName = hostName;
         this.portNumber = portNumber;
@@ -102,7 +101,7 @@ public class Client {
         }
     }
 
-    public void reset() {
+    public  void reset() {
 
         System.out.println("END");
         mouseController.setCanDraw(false);

@@ -9,4 +9,5 @@ public class GameCommand {
     public static final String NOT_ENOUGH_PLAYERS = " NOT ENOUGH PLAYERS TO START THE GAME, PLEASE WAIT\n";
     public static final String CHAT = "/CHAT/ ";
 
+
 }

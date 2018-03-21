@@ -107,8 +107,9 @@ public class PicturusGame implements Runnable {
     public void wordCheck(String wordGuess) {
 
         if (wordGuess.equals(gameWord)) {
-
+            server.broadcast(Encoder.reset("POTATO"),playerList);
             startingGame();
+
         }
     }
 

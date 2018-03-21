@@ -23,4 +23,8 @@ public class Encoder {
         return "/INFO/ " + message;
     }
 
+    public static String reset(String message){
+        return "/RESET/ " + message;
+    }
+
 }
