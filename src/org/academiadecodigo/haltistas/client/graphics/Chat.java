@@ -6,8 +6,6 @@ import org.academiadecodigo.simplegraphics.graphics.Text;
 import java.util.LinkedList;
 import java.util.List;
 
-//TODO remove special keys characters
-
 public class Chat {
 
     private final int POSX_TEXT = 420;
