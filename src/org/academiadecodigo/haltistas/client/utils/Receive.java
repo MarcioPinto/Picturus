@@ -1,5 +1,6 @@
 package org.academiadecodigo.haltistas.client.utils;
 
+import org.academiadecodigo.haltistas.GameCommand;
 import org.academiadecodigo.haltistas.client.Client;
 import org.academiadecodigo.haltistas.client.controllers.MouseController;
 import org.academiadecodigo.haltistas.client.graphics.Chat;
@@ -44,7 +45,7 @@ public class Receive {
 
                 message = messagePeel(str[0], message);
 
-                chat.receive("WORD IN PLAY! DRAW THIS SHIT: " + message);
+                chat.receive(GameCommand.DRAW_THIS + message);
                 break;
 
             case "/INFO/":

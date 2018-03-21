@@ -13,7 +13,6 @@ public class GameWords {
     public GameWords() {
     }
 
-
     public static String getWord() {
         List<String> listWord = new ArrayList<>();
 
@@ -21,20 +20,12 @@ public class GameWords {
             FileReader reader = new FileReader(PATH);
             BufferedReader bufferedReader = new BufferedReader(reader);
 
-            String line = "";
+            String line ;
 
             while ((line = bufferedReader.readLine()) != null) {
                 listWord.add(line);
             }
 
-            /*
-            for (String s: listWord) {//TODO delete just to see
-                System.out.println(s);
-            }
-            */
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
