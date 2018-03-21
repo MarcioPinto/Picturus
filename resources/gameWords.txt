@@ -1,0 +1,13 @@
+bat
+cat
+ghost
+bug
+snake
+tree
+knife
+mouse
+sun
+banana
+potato
+duck
+dog
