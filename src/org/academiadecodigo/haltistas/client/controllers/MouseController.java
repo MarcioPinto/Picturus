@@ -9,8 +9,8 @@ import org.academiadecodigo.simplegraphics.mouse.MouseHandler;
 public class MouseController implements MouseHandler {
 
 
-    public static final double MOUSE_ADJST_X = -7;
-    public static final double MOUSE_ADJST_Y = -30;
+    public static final double MOUSE_ADJST_X = -15;
+    public static final double MOUSE_ADJST_Y = -10;
 
     private Client client;
 

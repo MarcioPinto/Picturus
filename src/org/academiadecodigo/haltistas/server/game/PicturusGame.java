@@ -11,7 +11,7 @@ public class PicturusGame implements Runnable {
     private List<String> playerList;
     private LinkedList<String> waitingQueue;
     private String gameWord;
-    private int minPlayers = 3;
+    private int minPlayers = 1;
 
 
     public PicturusGame(Server server) {
