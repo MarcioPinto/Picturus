@@ -60,7 +60,7 @@ public class Chat {
 
         int ypixToTranslate = -20;
 
-        int posyTextToReceive = POSY_TEXT_TO_SEND - ypixToTranslate;
+        int posyTextToReceive = POSY_TEXT_TO_SEND + ypixToTranslate;
 
         for (Text text : history) {
             text.translate(0, ypixToTranslate);

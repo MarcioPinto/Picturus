@@ -1,5 +1,6 @@
 package org.academiadecodigo.haltistas.server.game;
 
+import org.academiadecodigo.haltistas.GameCommand;
 import org.academiadecodigo.haltistas.server.Server;
 
 import java.util.*;
@@ -36,9 +37,7 @@ public class PicturusGame implements Runnable {
                 while (waitingQueue.size() < minPlayers) {
                     try {
 
-                        server.whisper(
-                                waitingQueue.get(
-                                        waitingQueue.size() - 1), Encoder.info("waiting..."));
+                        initMessages();
                         this.wait();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -47,7 +46,7 @@ public class PicturusGame implements Runnable {
 
                 while (!waitingQueue.isEmpty()) {
                     String name = waitingQueue.poll();
-                    server.whisper(name, Encoder.info("The wait is over..."));
+                    server.whisper(name, Encoder.info(GameCommand.NEW_ROUND));
                     playerList.add(name);
                 }
 
@@ -64,11 +63,9 @@ public class PicturusGame implements Runnable {
         wordToDraw();
     }
 
-
     public void drawMessage(String message) {
         server.broadcast(Encoder.draw(message), playerList);
     }
-
 
     public void chatMessage(String message) {
 
@@ -110,7 +107,19 @@ public class PicturusGame implements Runnable {
     public void wordCheck(String wordGuess) {
 
         if (wordGuess.equals(gameWord)) {
+
             startingGame();
         }
+    }
+
+    private void initMessages(){
+        server.whisper(waitingQueue.get(waitingQueue.size() - 1),
+                Encoder.info(GameCommand.NOT_ENOUGH_PLAYERS ));
+
+        server.whisper(waitingQueue.get(waitingQueue.size() - 1),
+                        Encoder.info(GameCommand.QUIT));
+
+        server.whisper(waitingQueue.get(waitingQueue.size()-1),
+                Encoder.info(GameCommand.CHANGE_NAME));
     }
 }
