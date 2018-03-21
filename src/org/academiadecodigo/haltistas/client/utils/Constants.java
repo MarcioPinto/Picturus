@@ -1,4 +1,4 @@
-package org.academiadecodigo.haltistas.client;
+package org.academiadecodigo.haltistas.client.utils;
 
 public class Constants {
 

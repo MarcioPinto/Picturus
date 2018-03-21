@@ -3,6 +3,8 @@ package org.academiadecodigo.haltistas.client;
 import org.academiadecodigo.haltistas.client.controllers.MouseController;
 import org.academiadecodigo.haltistas.client.graphics.Chat;
 import org.academiadecodigo.haltistas.client.graphics.Pencil;
+import org.academiadecodigo.haltistas.client.utils.Constants;
+import org.academiadecodigo.haltistas.client.utils.Receive;
 import org.academiadecodigo.simplegraphics.graphics.Line;
 import org.academiadecodigo.simplegraphics.graphics.Rectangle;
 
@@ -53,7 +55,7 @@ public class Client {
         toServer = new PrintWriter(socket.getOutputStream(), true);
         fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-        new Thread(new InputHandler()).start();
+        new Thread(new InputHandler(this)).start();
     }
 
     private void canvasInit() {
@@ -100,7 +102,7 @@ public class Client {
         }
     }
 
-    private void reset() {
+    public void reset() {
 
         mouseController.setCanDraw(false);
         chat.setCanWrite(true);
@@ -108,8 +110,25 @@ public class Client {
         pencil.deleteAll();
     }
 
+    public Chat getChat() {
+        return chat;
+    }
+
+    public Pencil getPencil() {
+        return pencil;
+    }
+
+    public MouseController getMouseController() {
+        return mouseController;
+    }
 
     private class InputHandler implements Runnable {
+
+        private Client client;
+
+        public InputHandler(Client client) {
+            this.client = client;
+        }
 
         @Override
         public void run() {
@@ -128,73 +147,12 @@ public class Client {
                         continue;
                     }
 
-                    receivedFromServer(message);
+                    Receive.receivedFromServer(message, pencil, chat, mouseController, client);
 
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-        }
-
-
-        //TODO change this method to utility thing
-        private void receivedFromServer(String message) {
-
-            String[] str = message.split(" ");
-
-            switch (str[0]) {
-
-                case "/DRAW/":
-
-                    message = messagePeel(str[0], message);
-
-                    String[] point = message.split(" ");
-
-                    double IniX = Double.parseDouble(point[0]);
-                    double IniY = Double.parseDouble(point[1]);
-                    double FinX = Double.parseDouble(point[2]);
-                    double FinY = Double.parseDouble(point[3]);
-
-                    pencil.draw(IniX, IniY, FinX, FinY);
-                    break;
-
-                case "/CHAT/":
-
-                    message = messagePeel(str[0], message);
-
-                    chat.receive(message);
-                    break;
-
-
-                case "/ACTIVE/":
-
-                    mouseController.setCanDraw(true);
-                    chat.setCanWrite(false);
-
-                    message = messagePeel(str[0], message);
-
-                    chat.receive("WORD IN PLAY! DRAW THIS SHIT: " + message);
-                    break;
-
-                case "/INFO/":
-
-                    message = messagePeel(str[0], message);
-
-                    chat.receive(message);
-                    break;
-
-                case "/RESET/":
-                    reset();
-                    break;
-            }
-        }
-
-        private String messagePeel(String key, String message) {
-
-            message = message.replaceFirst(key, "");
-            message = message.substring(message.indexOf(" ") + 1);
-
-            return message;
         }
     }
 }
