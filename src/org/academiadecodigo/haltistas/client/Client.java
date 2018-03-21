@@ -103,11 +103,10 @@ public class Client {
 
     public  void reset() {
 
-        System.out.println("END");
         mouseController.setCanDraw(false);
         chat.setCanWrite(true);
-
         pencil.deleteAll();
+
     }
 
     public Chat getChat() {

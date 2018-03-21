@@ -12,7 +12,7 @@ public class PicturusGame implements Runnable {
     private List<String> playerList;
     private LinkedList<String> waitingQueue;
     private String gameWord;
-    private int minPlayers = 3;
+    private int minPlayers;
 
 
     public PicturusGame(Server server) {
@@ -20,6 +20,7 @@ public class PicturusGame implements Runnable {
         this.server = server;
         this.playerList = new ArrayList<>();
         this.waitingQueue = new LinkedList<>();
+        this.minPlayers = 3;
     }
 
 
@@ -39,28 +40,29 @@ public class PicturusGame implements Runnable {
 
                         initMessages();
                         this.wait();
+
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
-
                 while (!waitingQueue.isEmpty()) {
+
                     String name = waitingQueue.poll();
                     server.whisper(name, Encoder.info(GameCommand.NEW_ROUND));
                     playerList.add(name);
                 }
-
                 server.broadcast(Encoder.info("Starting game!"), playerList); //just to start the game
-
                 notifyAll();
             }
             startingGame();
+
         }
     }
 
 
     private void startingGame() {
         wordToDraw();
+        run();
     }
 
     public void drawMessage(String message) {
@@ -68,7 +70,6 @@ public class PicturusGame implements Runnable {
     }
 
     public void chatMessage(String message) {
-
         wordCheck(message);
         server.broadcast(Encoder.chat(message), playerList);
     }
@@ -95,7 +96,6 @@ public class PicturusGame implements Runnable {
     public void drawingPlayer() {
 
         Collections.shuffle(playerList);
-
         String toSend = Encoder.activePlayer(gameWord);
         server.whisper(playerList.get(0), toSend);
     }
@@ -107,20 +107,20 @@ public class PicturusGame implements Runnable {
     public void wordCheck(String wordGuess) {
 
         if (wordGuess.equals(gameWord)) {
-            server.broadcast(Encoder.reset("POTATO"),playerList);
+            server.broadcast(Encoder.reset(), playerList);
             startingGame();
 
         }
     }
 
-    private void initMessages(){
+    private void initMessages() {
         server.whisper(waitingQueue.get(waitingQueue.size() - 1),
-                Encoder.info(GameCommand.NOT_ENOUGH_PLAYERS ));
+                Encoder.info(GameCommand.NOT_ENOUGH_PLAYERS));
 
         server.whisper(waitingQueue.get(waitingQueue.size() - 1),
-                        Encoder.info(GameCommand.QUIT));
+                Encoder.info(GameCommand.QUIT));
 
-        server.whisper(waitingQueue.get(waitingQueue.size()-1),
+        server.whisper(waitingQueue.get(waitingQueue.size() - 1),
                 Encoder.info(GameCommand.CHANGE_NAME));
     }
 }
