@@ -1,6 +1,7 @@
 package org.academiadecodigo.haltistas.client.graphics;
 
 import org.academiadecodigo.haltistas.client.Client;
+import org.academiadecodigo.haltistas.client.utils.Constants;
 import org.academiadecodigo.simplegraphics.graphics.Text;
 
 import java.util.LinkedList;
@@ -20,6 +21,8 @@ public class Chat {
 
     private List<Text> history;
 
+    private List<Text> chatLenght;
+
     private boolean canWrite;
 
 
@@ -32,6 +35,7 @@ public class Chat {
         this.sendMessage.draw();
 
         this.history = new LinkedList<>();
+        this.chatLenght = new LinkedList<>();
 
         this.canWrite = true;
     }
@@ -40,6 +44,10 @@ public class Chat {
     public void write(char key) {
 
         if (!canWrite) {
+            return;
+        }
+
+        if (messageToSend.length() == Constants.CHAT_CHAR_LIMIT) {
             return;
         }
         messageToSend += key;

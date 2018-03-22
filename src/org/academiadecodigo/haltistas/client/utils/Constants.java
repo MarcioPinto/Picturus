@@ -20,11 +20,6 @@ public class Constants {
     public final static int BORDER_LEFT = PADDING + 15;
     public final static int BORDER_RIGTH = DRAWING_BOARD_X + 25;
 
-
-
-
-
-
-
+    public final static int CHAT_CHAR_LIMIT = 55;
 
 }
