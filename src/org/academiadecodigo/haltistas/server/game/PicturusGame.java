@@ -156,6 +156,14 @@ public class PicturusGame implements Runnable {
 
             server.broadcast(Encoder.chat(GameCommand.CORRECT_WORD + " : " + gameWord), playerList);
             server.broadcast(Encoder.reset(), playerList);
+
+            server.broadcast(Encoder.score(score.transform()),playerList);
+
+            //metodo para transformar int em String.
+            //TODO  --> 0 0 0
+            //separar por espaços para enviar
+
+            //server.broadcast(Encoder.score(),playerList);
             roundTime.cancel();
             endGame();
             restartGame();

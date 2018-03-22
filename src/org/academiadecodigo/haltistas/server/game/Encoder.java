@@ -27,4 +27,8 @@ public class Encoder {
         return "/RESET/ " ;
     }
 
+    public static String score(String message){
+        return  "/SCORE/"+ message;
+    }
+
 }

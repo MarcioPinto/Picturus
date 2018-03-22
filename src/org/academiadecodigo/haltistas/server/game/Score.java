@@ -21,16 +21,6 @@ public class Score {
         return scoreKeeper.get(name);
     }
 
-    public int additionDrawer(String name) {
-        int score = getScore(name) + 50;
-        return score;
-    }
-
-    public int additionGuess(String name) {
-        int score = getScore(name) + 100;
-        return score;
-    }
-
     public void test() {
         for (String name : scoreKeeper.keySet()) {
             System.out.println(name + " " + scoreKeeper.get(name));
@@ -47,5 +37,14 @@ public class Score {
 
 
         scoreKeeper.put(name, old + increment);
+    }
+
+    public String transform(){
+        String safe = " ";
+        for (String name : scoreKeeper.keySet()) {
+           safe += name + " " + scoreKeeper.get(name) + " ";
+        }
+        System.out.println(safe);
+        return safe;
     }
 }
