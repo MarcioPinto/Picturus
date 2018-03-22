@@ -27,8 +27,8 @@ public class Decoder {
 
                 message = message.replaceFirst(splitedMessage[0], "");
                 message = message.substring(message.indexOf(" ") + 1);
-
-                game.wordCheck(message);
+                String name = socket.getClientName();
+                game.wordCheck(message, name);
                 game.chatMessage(socket.getClientName() + " - " + message);
                 break;
 
