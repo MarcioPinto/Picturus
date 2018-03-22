@@ -14,6 +14,8 @@ public class PicturusGame implements Runnable {
     private String gameWord;
     private int minPlayers;
     private Time timer ;
+    Score score = new Score();
+    private int randomNumber;
 
 
     public PicturusGame(Server server) {
@@ -51,6 +53,7 @@ public class PicturusGame implements Runnable {
                     String name = waitingQueue.poll();
                     server.whisper(name, Encoder.info(GameCommand.NEW_ROUND));
                     playerList.add(name);
+                    score.addNameScore(name);
                 }
                 server.broadcast(Encoder.info("Starting game!"), playerList); //just to start the game
                 notifyAll();
@@ -70,7 +73,7 @@ public class PicturusGame implements Runnable {
     }
 
     public void chatMessage(String message) {
-        wordCheck(message);
+        wordCheck(message, "");
         server.broadcast(Encoder.chat(message), playerList);
     }
 
@@ -95,21 +98,31 @@ public class PicturusGame implements Runnable {
 
     public void drawingPlayer() {
 
-        Collections.shuffle(playerList);
-        String toSend = Encoder.activePlayer(gameWord);
-        server.whisper(playerList.get(0), toSend);
-    }
+        randomNumber = (int) Math.floor(Math.random()*playerList.size());
 
+        String toSend = Encoder.activePlayer(gameWord);
+        server.whisper(playerList.get(randomNumber), toSend);
+
+    }
 
     /**
      * compares the gameWord with the words sent by the chat with /CHAT/
      */
-    public void wordCheck(String wordGuess) {
+    public void wordCheck(String wordGuess, String name) {
+
 
         if (wordGuess.equals(gameWord)) {
-            server.broadcast(Encoder.reset(), playerList);
-            startingGame();
 
+            int currentScore = score.additionGuess(name);
+            score.changeScore(name, currentScore);
+            score.changeScore(playerList.get(randomNumber), score.additionDrawer(playerList.get(randomNumber)));
+
+            server.broadcast(Encoder.reset(), playerList);
+            //Encoder.score()
+            server.broadcast(Encoder.chat(GameCommand.CORRECT_WORD + " : " + gameWord), playerList);
+
+            score.test();
+            startingGame();
         }
     }
 
