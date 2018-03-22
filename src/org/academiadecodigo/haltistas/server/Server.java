@@ -37,20 +37,20 @@ public class Server {
 
         while (true) {
 
+            System.out.println("New client is connecting: ");
             Socket clientSocket = serverSocket.accept();
+            System.out.println(clientSocket);
 
             String clientName = generateName();
 
             ClientHandler handler = new ClientHandler(clientSocket, clientName);
 
-            synchronized (game) {
 
-                clientList.put(clientName, handler);
+            clientList.put(clientName, handler);
+            System.out.println("The size of the map is: " + clientList.size());
+            service.submit(handler);
 
-                game.addPlayer(clientName);
-                service.submit(handler);
-                game.notifyAll();
-            }
+            game.addPlayer(clientName);
         }
     }
 
@@ -109,7 +109,7 @@ public class Server {
                         continue;
                     }
 
-                    decoder.decoder(message, this);
+                    decoder.decoder(message);
                 }
 
             } catch (IOException e) {
