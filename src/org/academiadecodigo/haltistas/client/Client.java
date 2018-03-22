@@ -122,6 +122,9 @@ public class Client {
     }
 
     public void eraseDraw() {
+        if (!mouseController.isCanDraw()) {
+            return;
+        }
         pencil.deleteAll();
     }
 
