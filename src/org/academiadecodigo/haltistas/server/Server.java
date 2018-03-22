@@ -100,7 +100,6 @@ public class Server {
                 while (true) {
 
                     String message = fromClients.readLine();
-                    System.err.println("MESSAGE: " + message);
 
                     if (message == null || message.isEmpty()) {
                         continue;
