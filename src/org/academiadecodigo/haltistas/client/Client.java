@@ -122,10 +122,13 @@ public class Client {
     }
 
     public void eraseDraw() {
+
         if (!mouseController.isCanDraw()) {
             return;
         }
+
         pencil.deleteAll();
+        sendToServer("/ERASE/");
     }
 
     private class InputHandler implements Runnable {

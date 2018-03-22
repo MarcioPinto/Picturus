@@ -87,6 +87,10 @@ public class PicturusGame implements Runnable {
     }
 
 
+    public void eraseDraw(String message) {
+        server.broadcast(message, playerList);
+    }
+
     public void drawMessage(String message) {
         server.broadcast(Encoder.draw(message), playerList);
     }

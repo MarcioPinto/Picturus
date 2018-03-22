@@ -58,6 +58,13 @@ public class Receive {
             case "/RESET/":
                 client.reset();
                 break;
+
+            case "/ERASE/":
+                client.eraseDraw();
+                break;
+
+            default:
+                System.err.println("ERROR ERROR receivedFromServer");
         }
     }
 
