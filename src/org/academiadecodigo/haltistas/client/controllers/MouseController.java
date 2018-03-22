@@ -87,11 +87,9 @@ public class MouseController implements MouseHandler {
 
         String str = "/DRAW/ " + String.valueOf(XIni) + " " + String.valueOf(YIni) + " " +
                 String.valueOf(mouseEvent.getX()) + " " + String.valueOf(mouseEvent.getY()) + "\n";
-        System.out.println(str);
 
 
         client.sendToServer(str);
-
         XIni = mouseEvent.getX();
         YIni = mouseEvent.getY();
 
