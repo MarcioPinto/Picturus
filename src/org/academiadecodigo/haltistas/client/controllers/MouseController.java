@@ -48,12 +48,20 @@ public class MouseController implements MouseHandler {
     @Override
     public void mousePressed(MouseEvent mouseEvent) {
 
+        if (!canDraw){
+            return;
+        }
+
         event = mouseEvent;
     }
 
 
     @Override
     public void mouseReleased(MouseEvent mouseEvent) {
+
+        if(!canDraw){
+            return;
+        }
 
         sendLine(event, mouseEvent);
         event = null;
