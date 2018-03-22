@@ -1,15 +1,14 @@
 package org.academiadecodigo.haltistas.server.game;
 
-import org.academiadecodigo.haltistas.GameCommand;
+import org.academiadecodigo.haltistas.GameStrings;
 import org.academiadecodigo.haltistas.server.Server;
-
 import java.util.*;
 
 public class PicturusGame implements Runnable {
 
 
     private final static int ROUND_TIME = 60;
-    private final static int WAIT_TIME = 5;
+    private final static int WAIT_TIME = 30;
 
     private static final int FREQUENCY = 1000;
 
@@ -38,9 +37,8 @@ public class PicturusGame implements Runnable {
     public void run() {
 
         while (true) {
-
             fillQueue();
-            System.out.println("preparing the game");
+
             prepareGame();
         }
     }
@@ -55,11 +53,8 @@ public class PicturusGame implements Runnable {
             while (waitingQueue.size() < minPlayers
                     || waitingQueue.isEmpty() || gameIsRunning) {
 
-                System.out.println(gameIsRunning);
                 try {
-                    System.out.println("waking up...");
                     this.wait();
-
                     initMessages();
 
                 } catch (InterruptedException e) {
@@ -76,7 +71,7 @@ public class PicturusGame implements Runnable {
     private void prepareGame() {
         synchronized (this) {
             playerOnQueue();
-            server.broadcast(Encoder.info("Starting game!"), playerList);
+            server.broadcast(Encoder.info(GameStrings.START), playerList);
             wordToDraw();
             roundTime = new RoundTimer();
             timer.scheduleAtFixedRate(roundTime, 0, FREQUENCY);
@@ -91,7 +86,7 @@ public class PicturusGame implements Runnable {
             while (!waitingQueue.isEmpty()) {
 
                 String name = waitingQueue.poll();
-                server.whisper(name, Encoder.info(GameCommand.NEW_ROUND));
+                server.whisper(name, Encoder.info(GameStrings.NEW_ROUND));
                 playerList.add(name);
             }
         }
@@ -166,8 +161,9 @@ public class PicturusGame implements Runnable {
     public void wordCheck(String wordGuess) {
 
         if (wordGuess.equals(gameWord)) {
-            server.broadcast(Encoder.chat(GameCommand.CORRECT_WORD + " : " + gameWord), playerList);
+            server.broadcast(Encoder.chat(GameStrings.CORRECT_WORD + " : " + gameWord), playerList);
             server.broadcast(Encoder.reset(), playerList);
+
             roundTime.cancel();
             endGame();
             restartGame();
@@ -180,7 +176,7 @@ public class PicturusGame implements Runnable {
      */
     private void initMessages() {
         server.whisper(waitingQueue.get(waitingQueue.size() - 1),
-                Encoder.info(GameCommand.NOT_ENOUGH_PLAYERS));
+                Encoder.info(GameStrings.NOT_ENOUGH_PLAYERS));
     }
 
     /**
@@ -192,7 +188,6 @@ public class PicturusGame implements Runnable {
             waitingQueue.addAll(playerList);
             playerList.clear();
             PicturusGame.this.notifyAll();
-            System.out.println("in here");
         }
     }
 
@@ -214,8 +209,8 @@ public class PicturusGame implements Runnable {
             System.out.println(seconds);
 
             if (seconds < 0) {
-                System.out.println("canceling");
                 this.cancel();
+                server.broadcast(Encoder.chat(GameStrings.NO_RIGHT_ANSWER),playerList);
                 endGame();
                 timer.scheduleAtFixedRate(new WaitingTimer(), 0, FREQUENCY);
             }
@@ -231,17 +226,13 @@ public class PicturusGame implements Runnable {
 
         @Override
         public void run() {
-
             seconds--;
             System.out.println(seconds);
 
             if (seconds < 0) {
-                System.out.println("canceling");
                 this.cancel();
                 restartGame();
             }
         }
     }
-
-
 }

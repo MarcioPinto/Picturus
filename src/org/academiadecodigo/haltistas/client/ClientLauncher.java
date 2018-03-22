@@ -1,5 +1,6 @@
 package org.academiadecodigo.haltistas.client;
 
+import org.academiadecodigo.haltistas.GameStrings;
 import org.academiadecodigo.haltistas.client.controllers.KeyboardController;
 import org.academiadecodigo.haltistas.client.controllers.MouseController;
 
@@ -7,7 +8,6 @@ import java.io.IOException;
 
 public class ClientLauncher {
 
-    //TODO substitute printStackTrace for serr's
 
     public static void main(String[] args) {
 
@@ -29,7 +29,7 @@ public class ClientLauncher {
             client.init();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println(GameStrings.CONNECTION_ERROR);
 
         }
     }
