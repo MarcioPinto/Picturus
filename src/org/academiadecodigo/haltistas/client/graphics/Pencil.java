@@ -22,11 +22,11 @@ public class Pencil {
     public void draw(double iniX, double iniY, double finX, double finY) {
 
         if (iniX > Constants.DRAWING_BOARD_X) {
-            iniX = Constants.BORDER_RIGTH;
+            iniX = Constants.BORDER_RIGHT;
         }
 
         if (finX > Constants.DRAWING_BOARD_X) {
-            finX = Constants.BORDER_RIGTH;
+            finX = Constants.BORDER_RIGHT;
         }
 
         if (iniY > Constants.DRAWING_BOARD_Y) {

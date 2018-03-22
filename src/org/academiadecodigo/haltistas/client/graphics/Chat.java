@@ -1,6 +1,7 @@
 package org.academiadecodigo.haltistas.client.graphics;
 
 import org.academiadecodigo.haltistas.client.Client;
+import org.academiadecodigo.simplegraphics.graphics.Color;
 import org.academiadecodigo.simplegraphics.graphics.Text;
 
 import java.util.LinkedList;
@@ -67,6 +68,7 @@ public class Chat {
         }
 
         Text receivedMessage = new Text(POSX_TEXT, posyTextToReceive, message);
+        receivedMessage.setColor(Color.ORANGE);
         history.add(receivedMessage);
         receivedMessage.draw();
     }

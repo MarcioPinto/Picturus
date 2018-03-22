@@ -107,6 +107,7 @@ public class PicturusGame implements Runnable {
     public void wordCheck(String wordGuess) {
 
         if (wordGuess.equals(gameWord)) {
+            server.broadcast(Encoder.chat(GameCommand.CORRECT_WORD + " : " + gameWord),playerList);
             server.broadcast(Encoder.reset(), playerList);
             startingGame();
 
@@ -116,11 +117,5 @@ public class PicturusGame implements Runnable {
     private void initMessages() {
         server.whisper(waitingQueue.get(waitingQueue.size() - 1),
                 Encoder.info(GameCommand.NOT_ENOUGH_PLAYERS));
-
-        server.whisper(waitingQueue.get(waitingQueue.size() - 1),
-                Encoder.info(GameCommand.QUIT));
-
-        server.whisper(waitingQueue.get(waitingQueue.size() - 1),
-                Encoder.info(GameCommand.CHANGE_NAME));
     }
 }

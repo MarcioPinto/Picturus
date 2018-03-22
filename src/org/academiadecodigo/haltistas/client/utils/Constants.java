@@ -18,7 +18,7 @@ public class Constants {
     public final static int BORDER_UP = PADDING + 20;
     public final static int BORDER_DOWN = DRAWING_BOARD_Y + 20;
     public final static int BORDER_LEFT = PADDING + 15;
-    public final static int BORDER_RIGTH = DRAWING_BOARD_X + 25;
+    public final static int BORDER_RIGHT = DRAWING_BOARD_X + 25;
 
 
 
