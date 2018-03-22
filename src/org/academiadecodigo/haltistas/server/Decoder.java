@@ -41,7 +41,7 @@ public class Decoder {
                 break;
 
             default:
-                System.err.println("the command on the message is fuck up");
+                System.err.println("Something went wrong!");
         }
     }
 }

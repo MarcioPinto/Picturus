@@ -13,7 +13,7 @@ public class PicturusGame implements Runnable {
     private LinkedList<String> waitingQueue;
     private String gameWord;
     private int minPlayers;
-    private Time timer ;
+    private Time timer;
     Score score = new Score();
     private int randomNumber;
 
@@ -98,7 +98,7 @@ public class PicturusGame implements Runnable {
 
     public void drawingPlayer() {
 
-        randomNumber = (int) Math.floor(Math.random()*playerList.size());
+        randomNumber = (int) Math.floor(Math.random() * playerList.size());
 
         String toSend = Encoder.activePlayer(gameWord);
         server.whisper(playerList.get(randomNumber), toSend);
@@ -129,11 +129,5 @@ public class PicturusGame implements Runnable {
     private void initMessages() {
         server.whisper(waitingQueue.get(waitingQueue.size() - 1),
                 Encoder.info(GameCommand.NOT_ENOUGH_PLAYERS));
-
-        server.whisper(waitingQueue.get(waitingQueue.size() - 1),
-                Encoder.info(GameCommand.QUIT));
-
-        server.whisper(waitingQueue.get(waitingQueue.size() - 1),
-                Encoder.info(GameCommand.CHANGE_NAME));
     }
 }
