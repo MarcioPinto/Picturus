@@ -7,21 +7,14 @@ import org.academiadecodigo.simplegraphics.mouse.MouseEvent;
 import org.academiadecodigo.simplegraphics.mouse.MouseEventType;
 import org.academiadecodigo.simplegraphics.mouse.MouseHandler;
 
-import java.awt.*;
 
 public class MouseController implements MouseHandler {
 
 
-    public static final double MOUSE_ADJST_X = -15;
-    public static final double MOUSE_ADJST_Y = -10;
-
     private Client client;
 
-    private double XIni;
-    private double YIni;
+    private MouseEvent event;
 
-    private double XFin;
-    private double YFin;
     private int count;
 
     private boolean canDraw;
@@ -37,11 +30,8 @@ public class MouseController implements MouseHandler {
         Mouse mouse = new Mouse(this);
 
         mouse.addEventListener(MouseEventType.MOUSE_PRESSED);
-
         mouse.addEventListener(MouseEventType.MOUSE_RELEASE);
-
         mouse.addEventListener(MouseEventType.MOUSE_DRAGGED);
-
     }
 
 
@@ -58,31 +48,31 @@ public class MouseController implements MouseHandler {
     @Override
     public void mousePressed(MouseEvent mouseEvent) {
 
-        XIni = mouseEvent.getX();
-        YIni = mouseEvent.getY();
-
-        System.out.println(mouseEvent);
+        event = mouseEvent;
     }
 
 
     @Override
     public void mouseReleased(MouseEvent mouseEvent) {
 
-        XFin = mouseEvent.getX();
-        YFin = mouseEvent.getY();
-
+        sendLine(event, mouseEvent);
+        event = null;
     }
 
     @Override
     public void mouseDragged(MouseEvent mouseEvent) {
-
-        //TODO change this to client class
 
         if (!canDraw) {
             return;
         }
 
         if (!controlBorders(mouseEvent)){
+            event = null;
+            return;
+        }
+
+        if (event == null) {
+            event = mouseEvent;
             return;
         }
 
@@ -91,17 +81,17 @@ public class MouseController implements MouseHandler {
         if (count <= 0 || count % 3 != 0) {
             return;
         }
+        sendLine(event, mouseEvent);
 
-        String str = "/DRAW/ " + String.valueOf(XIni) + " " + String.valueOf(YIni) + " " +
-                String.valueOf(mouseEvent.getX()) + " " + String.valueOf(mouseEvent.getY()) + "\n";
-        System.out.println(str);
+        event = mouseEvent;
+    }
 
+    private void sendLine(MouseEvent initial, MouseEvent end) {
 
-        client.sendToServer(str);
+        String lineCoordinates = "/DRAW/ " + initial.getX() + " " + initial.getY() + " " +
+               end.getX() + " " + end.getY() + "\n";
 
-        XIni = mouseEvent.getX();
-        YIni = mouseEvent.getY();
-
+        client.sendToServer(lineCoordinates);
     }
 
     private boolean controlBorders(MouseEvent mouseEvent) {
