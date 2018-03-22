@@ -41,7 +41,7 @@ public class Server {
 
             String clientName = generateName();
 
-            ClientHandler handler = new ClientHandler(clientSocket);
+            ClientHandler handler = new ClientHandler(clientSocket, clientName);
 
             synchronized (game) {
 
@@ -74,21 +74,25 @@ public class Server {
     }
 
 
-    private class ClientHandler implements Runnable {
+    class ClientHandler implements Runnable {
 
+        private String clientName;
         private Socket connection;
         private PrintWriter toClients;
         private BufferedReader fromClients;
         private Decoder decoder;
 
 
-        ClientHandler(Socket clientSocket) throws IOException {
-
+        ClientHandler(Socket clientSocket, String clientName) throws IOException {
+            this.clientName = clientName;
             this.connection = clientSocket;
             this.decoder = new Decoder(game);
             this.toClients = new PrintWriter(connection.getOutputStream(), true);
         }
 
+        public String getClientName() {
+            return clientName;
+        }
 
         @Override
         public void run() {
@@ -105,7 +109,7 @@ public class Server {
                         continue;
                     }
 
-                    decoder.decoder(message);
+                    decoder.decoder(message, this);
                 }
 
             } catch (IOException e) {

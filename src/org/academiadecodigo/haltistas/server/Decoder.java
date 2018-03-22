@@ -2,6 +2,8 @@ package org.academiadecodigo.haltistas.server;
 
 import org.academiadecodigo.haltistas.server.game.PicturusGame;
 
+import java.net.Socket;
+
 
 public class Decoder {
 
@@ -13,7 +15,7 @@ public class Decoder {
     }
 
 
-    public void decoder(String message) {
+    public void decoder(String message, Server.ClientHandler socket) {
 
         // TODO: /DRAW/ /NAME/ MESSAGE
 
@@ -27,7 +29,7 @@ public class Decoder {
                 message = message.substring(message.indexOf(" ") + 1);
 
                 game.wordCheck(message);
-                game.chatMessage(message);
+                game.chatMessage(socket.getClientName() + " - " + message);
                 break;
 
             case "/DRAW/":
