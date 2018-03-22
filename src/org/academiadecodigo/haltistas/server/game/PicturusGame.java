@@ -18,6 +18,8 @@ public class PicturusGame implements Runnable {
     private LinkedList<String> waitingQueue;
     private String gameWord;
     private int minPlayers;
+    private int randomNumber;
+    private Score score;
 
     private Timer timer;
     private RoundTimer roundTime;
@@ -31,6 +33,7 @@ public class PicturusGame implements Runnable {
         this.waitingQueue = new LinkedList<>();
         this.minPlayers = 3;
         timer = new Timer();
+        score = new Score();
     }
 
 
@@ -82,6 +85,7 @@ public class PicturusGame implements Runnable {
                 String name = waitingQueue.poll();
                 server.whisper(name, Encoder.info(GameCommand.NEW_ROUND));
                 playerList.add(name);
+                score.addNameScore(name);
             }
         }
     }
@@ -92,7 +96,6 @@ public class PicturusGame implements Runnable {
     }
 
     public void chatMessage(String message) {
-        wordCheck(message);
         server.broadcast(Encoder.chat(message), playerList);
     }
 
@@ -119,10 +122,15 @@ public class PicturusGame implements Runnable {
 
 
     public void drawingPlayer() {
-
+/*
         Collections.shuffle(playerList);
         String toSend = Encoder.activePlayer(gameWord);
         server.whisper(playerList.get(0), toSend);
+         */
+        randomNumber = (int) Math.floor(Math.random() * playerList.size());
+
+        String toSend = Encoder.activePlayer(gameWord);
+        server.whisper(playerList.get(randomNumber), toSend);
     }
 
     private void endGame() {
@@ -134,9 +142,18 @@ public class PicturusGame implements Runnable {
     /**
      * compares the gameWord with the words sent by the chat with /CHAT/
      */
-    public void wordCheck(String wordGuess) {
+    public void wordCheck(String wordGuess, String name) {
 
+        System.out.println("Checking word");
         if (wordGuess.equals(gameWord)) {
+            /*int currentScore = score.additionGuess(name);
+            score.changeScore(name, currentScore);
+            score.changeScore(playerList.get(randomNumber), score.additionDrawer(playerList.get(randomNumber)));
+            */
+            score.add(name, 100);
+            score.add(playerList.get(randomNumber), 50);
+            score.test();
+
             server.broadcast(Encoder.chat(GameCommand.CORRECT_WORD + " : " + gameWord), playerList);
             server.broadcast(Encoder.reset(), playerList);
             roundTime.cancel();
@@ -144,6 +161,17 @@ public class PicturusGame implements Runnable {
             restartGame();
 
         }
+/*
+        if (wordGuess.equals(gameWord)) {
+
+            server.broadcast(Encoder.chat(GameCommand.CORRECT_WORD + " : " + gameWord), playerList);
+            server.broadcast(Encoder.reset(), playerList);
+            //Encoder.score()
+            roundTime.cancel();
+            endGame();
+            restartGame();
+        }
+        */
     }
 
     private void initMessages() {
@@ -155,7 +183,7 @@ public class PicturusGame implements Runnable {
         synchronized (this) {
             waitingQueue.addAll(playerList);
             playerList.clear();
-            PicturusGame.this.notifyAll();
+            notifyAll();
             System.out.println("in here");
         }
     }
@@ -183,7 +211,6 @@ public class PicturusGame implements Runnable {
         }
     }
 
-
     private class WaitingTimer extends TimerTask {
 
         private int seconds = WAIT_TIME;
@@ -201,6 +228,4 @@ public class PicturusGame implements Runnable {
             }
         }
     }
-
-
 }

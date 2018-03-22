@@ -48,7 +48,7 @@ public class Server {
 
             clientList.put(clientName, handler);
             System.out.println("The size of the map is: " + clientList.size());
-            service.submit(handler);
+            service.execute(handler);
 
             game.addPlayer(clientName);
         }
@@ -109,7 +109,7 @@ public class Server {
                         continue;
                     }
 
-                    decoder.decoder(message);
+                    decoder.decoder(message,this);
                 }
 
             } catch (IOException e) {

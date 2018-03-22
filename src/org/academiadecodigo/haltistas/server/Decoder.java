@@ -15,7 +15,7 @@ public class Decoder {
     }
 
 
-    public void decoder(String message) {
+    public void decoder(String message, Server.ClientHandler socket) {
 
         // TODO: /DRAW/ /NAME/ MESSAGE
 
@@ -27,8 +27,8 @@ public class Decoder {
 
                 message = message.replaceFirst(splitedMessage[0], "");
                 message = message.substring(message.indexOf(" ") + 1);
-               // String name = socket.getClientName();
-                game.wordCheck(message);
+                String name = socket.getClientName();
+                game.wordCheck(message,name);
                 game.chatMessage(message);
                 break;
 
