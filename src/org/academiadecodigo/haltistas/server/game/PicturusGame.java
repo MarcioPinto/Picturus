@@ -8,12 +8,20 @@ import java.util.*;
 public class PicturusGame implements Runnable {
 
 
+    private final static int ROUND_TIME = 5;
+    private final static int WAIT_TIME = 10;
+
+    private static final int FREQUENCY = 1000;
+
     private Server server;
     private List<String> playerList;
     private LinkedList<String> waitingQueue;
     private String gameWord;
     private int minPlayers;
-    private Time timer ;
+
+    private Timer timer;
+    private RoundTimer roundTime;
+    private boolean gameIsRunning;
 
 
     public PicturusGame(Server server) {
@@ -22,6 +30,7 @@ public class PicturusGame implements Runnable {
         this.playerList = new ArrayList<>();
         this.waitingQueue = new LinkedList<>();
         this.minPlayers = 3;
+        timer = new Timer();
     }
 
 
@@ -30,40 +39,53 @@ public class PicturusGame implements Runnable {
 
         while (true) {
 
-            synchronized (this) {
-
-                if (waitingQueue.isEmpty()) {
-                    continue;
-                }
-
-                while (waitingQueue.size() < minPlayers) {
-                    try {
-
-                        initMessages();
-                        this.wait();
-
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                while (!waitingQueue.isEmpty()) {
-
-                    String name = waitingQueue.poll();
-                    server.whisper(name, Encoder.info(GameCommand.NEW_ROUND));
-                    playerList.add(name);
-                }
-                server.broadcast(Encoder.info("Starting game!"), playerList); //just to start the game
-                notifyAll();
-            }
-            startingGame();
-
+            fillQueue();
+            System.out.println("preparing the game");
+            prepareGame();
         }
     }
 
+    private void fillQueue() {
 
-    private void startingGame() {
-        wordToDraw();
+        synchronized (this) {
+            while (waitingQueue.size() < minPlayers
+                    || waitingQueue.isEmpty() || gameIsRunning) {
+
+                System.out.println(gameIsRunning);
+                try {
+                    System.out.println("waking up...");
+                    this.wait();
+
+                    initMessages();
+
+                } catch (InterruptedException e) {
+                    //no handling is required for the interruption
+                }
+            }
+        }
     }
+
+    private void prepareGame() {
+        synchronized (this) {
+            playerOnQueue();
+            server.broadcast(Encoder.info("Starting game!"), playerList);
+            wordToDraw();
+            roundTime = new RoundTimer();
+            timer.scheduleAtFixedRate(roundTime, 0, FREQUENCY);
+        }
+    }
+
+    private void playerOnQueue() {
+        synchronized (this) {
+            while (!waitingQueue.isEmpty()) {
+
+                String name = waitingQueue.poll();
+                server.whisper(name, Encoder.info(GameCommand.NEW_ROUND));
+                playerList.add(name);
+            }
+        }
+    }
+
 
     public void drawMessage(String message) {
         server.broadcast(Encoder.draw(message), playerList);
@@ -80,7 +102,10 @@ public class PicturusGame implements Runnable {
      * @param playerName
      */
     public void addPlayer(String playerName) {
-        waitingQueue.offer(playerName);
+        synchronized (this) {
+            waitingQueue.offer(playerName);
+            notifyAll();
+        }
     }
 
     /**
@@ -100,6 +125,11 @@ public class PicturusGame implements Runnable {
         server.whisper(playerList.get(0), toSend);
     }
 
+    private void endGame() {
+        synchronized (this) {
+            gameIsRunning = false;
+        }
+    }
 
     /**
      * compares the gameWord with the words sent by the chat with /CHAT/
@@ -107,9 +137,9 @@ public class PicturusGame implements Runnable {
     public void wordCheck(String wordGuess) {
 
         if (wordGuess.equals(gameWord)) {
-            server.broadcast(Encoder.chat(GameCommand.CORRECT_WORD + " : " + gameWord),playerList);
+            server.broadcast(Encoder.chat(GameCommand.CORRECT_WORD + " : " + gameWord), playerList);
             server.broadcast(Encoder.reset(), playerList);
-            startingGame();
+            roundTime.cancel();
 
         }
     }
@@ -118,4 +148,57 @@ public class PicturusGame implements Runnable {
         server.whisper(waitingQueue.get(waitingQueue.size() - 1),
                 Encoder.info(GameCommand.NOT_ENOUGH_PLAYERS));
     }
+
+    private void restartGame() {
+        synchronized (this) {
+            waitingQueue.addAll(playerList);
+            playerList.clear();
+            PicturusGame.this.notifyAll();
+            System.out.println("in here");
+        }
+    }
+
+    public class RoundTimer extends TimerTask {
+
+        private int seconds = ROUND_TIME;
+
+        @Override
+        public void run() {
+
+            synchronized (PicturusGame.this) {
+                gameIsRunning = true;
+            }
+
+            seconds--;
+            System.out.println(seconds);
+
+            if (seconds < 0) {
+                System.out.println("canceling");
+                this.cancel();
+                endGame();
+                timer.scheduleAtFixedRate(new WaitingTimer(), 0, FREQUENCY);
+            }
+        }
+    }
+
+
+    private class WaitingTimer extends TimerTask {
+
+        private int seconds = WAIT_TIME;
+
+        @Override
+        public void run() {
+
+            seconds--;
+            System.out.println(seconds);
+
+            if (seconds < 0) {
+                System.out.println("canceling");
+                this.cancel();
+                restartGame();
+            }
+        }
+    }
+
+
 }
