@@ -45,6 +45,10 @@ public class PicturusGame implements Runnable {
         }
     }
 
+    /**
+     * Doesn't allow the game to start until there is a minimum number of players
+     * Doesn't allow the game to start if the game had already started
+     */
     private void fillQueue() {
 
         synchronized (this) {
@@ -65,6 +69,10 @@ public class PicturusGame implements Runnable {
         }
     }
 
+    /**
+     * Retrieves and removes the first player from the waiting queue
+     * Tells all the the players that the game is starting
+     */
     private void prepareGame() {
         synchronized (this) {
             playerOnQueue();
@@ -75,6 +83,9 @@ public class PicturusGame implements Runnable {
         }
     }
 
+    /**
+     * Assigns a "name" to the players
+     */
     private void playerOnQueue() {
         synchronized (this) {
             while (!waitingQueue.isEmpty()) {
@@ -86,11 +97,19 @@ public class PicturusGame implements Runnable {
         }
     }
 
-
+    /**
+     * Sends the drawing to all all the players
+     * @param message
+     */
     public void drawMessage(String message) {
         server.broadcast(Encoder.draw(message), playerList);
     }
 
+    /**
+     * Sends the messages from the players to all the players
+     * Compares the words with the Game Word
+     * @param message
+     */
     public void chatMessage(String message) {
         wordCheck(message);
         server.broadcast(Encoder.chat(message), playerList);
@@ -117,7 +136,10 @@ public class PicturusGame implements Runnable {
         drawingPlayer();
     }
 
-
+    /**
+     * Gets a random player from the list of players
+     * Sends the Game Word to the player
+     */
     public void drawingPlayer() {
 
         Collections.shuffle(playerList);
@@ -125,6 +147,9 @@ public class PicturusGame implements Runnable {
         server.whisper(playerList.get(0), toSend);
     }
 
+    /**
+     * Turns gameIsRunning to false
+     */
     private void endGame() {
         synchronized (this) {
             gameIsRunning = false;
@@ -132,7 +157,11 @@ public class PicturusGame implements Runnable {
     }
 
     /**
-     * compares the gameWord with the words sent by the chat with /CHAT/
+     * Compares the Game Word with the words sent by the chat with /CHAT/
+     * If the word is the same, sends a message to the players
+     * Stops the Round Time
+     * Ends the Game
+     * Restarts the Game
      */
     public void wordCheck(String wordGuess) {
 
@@ -146,11 +175,18 @@ public class PicturusGame implements Runnable {
         }
     }
 
+    /**
+     * Tells the players that there's not enough players for the game to start
+     */
     private void initMessages() {
         server.whisper(waitingQueue.get(waitingQueue.size() - 1),
                 Encoder.info(GameCommand.NOT_ENOUGH_PLAYERS));
     }
 
+    /**
+     * Restarts the Game
+     * Adds all the waiting players
+     */
     private void restartGame() {
         synchronized (this) {
             waitingQueue.addAll(playerList);
@@ -160,6 +196,9 @@ public class PicturusGame implements Runnable {
         }
     }
 
+    /**
+     * Timer for the Rounds
+     */
     public class RoundTimer extends TimerTask {
 
         private int seconds = ROUND_TIME;
@@ -183,7 +222,9 @@ public class PicturusGame implements Runnable {
         }
     }
 
-
+    /**
+     * Timer for the time between the end of a round and the start of another round
+     */
     private class WaitingTimer extends TimerTask {
 
         private int seconds = WAIT_TIME;
