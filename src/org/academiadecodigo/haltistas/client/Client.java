@@ -101,7 +101,7 @@ public class Client {
         }
     }
 
-    public  void reset() {
+    public void reset() {
 
         mouseController.setCanDraw(false);
         chat.setCanWrite(true);
@@ -119,6 +119,10 @@ public class Client {
 
     public MouseController getMouseController() {
         return mouseController;
+    }
+
+    public void eraseDraw() {
+        pencil.deleteAll();
     }
 
     private class InputHandler implements Runnable {
