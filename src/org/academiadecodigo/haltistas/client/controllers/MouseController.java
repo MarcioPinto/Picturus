@@ -1,10 +1,13 @@
 package org.academiadecodigo.haltistas.client.controllers;
 
 import org.academiadecodigo.haltistas.client.Client;
+import org.academiadecodigo.haltistas.client.utils.Constants;
 import org.academiadecodigo.simplegraphics.mouse.Mouse;
 import org.academiadecodigo.simplegraphics.mouse.MouseEvent;
 import org.academiadecodigo.simplegraphics.mouse.MouseEventType;
 import org.academiadecodigo.simplegraphics.mouse.MouseHandler;
+
+import java.awt.*;
 
 public class MouseController implements MouseHandler {
 
@@ -79,6 +82,10 @@ public class MouseController implements MouseHandler {
             return;
         }
 
+        if (!controlBorders(mouseEvent)){
+            return;
+        }
+
         count++;
 
         if (count <= 0 || count % 3 != 0) {
@@ -95,6 +102,16 @@ public class MouseController implements MouseHandler {
         XIni = mouseEvent.getX();
         YIni = mouseEvent.getY();
 
+    }
+
+    private boolean controlBorders(MouseEvent mouseEvent) {
+
+        if (mouseEvent.getX() < Constants.PADDING || mouseEvent.getX() > Constants.DRAWING_BOARD_X + 10||
+                mouseEvent.getY() < Constants.PADDING || mouseEvent.getY() > Constants.DRAWING_BOARD_Y + 10) {
+
+            return false;
+        }
+        return true;
     }
 
     public void setCanDraw(boolean canDraw) {

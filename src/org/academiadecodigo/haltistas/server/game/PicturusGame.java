@@ -21,7 +21,7 @@ public class PicturusGame implements Runnable {
         this.server = server;
         this.playerList = new ArrayList<>();
         this.waitingQueue = new LinkedList<>();
-        this.minPlayers = 3;
+        this.minPlayers = 1;
     }
 
 
