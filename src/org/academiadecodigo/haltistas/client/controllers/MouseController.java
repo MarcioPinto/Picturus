@@ -1,24 +1,21 @@
 package org.academiadecodigo.haltistas.client.controllers;
 
+import org.academiadecodigo.haltistas.GameStrings;
 import org.academiadecodigo.haltistas.client.Client;
+import org.academiadecodigo.haltistas.client.utils.Constants;
 import org.academiadecodigo.simplegraphics.mouse.Mouse;
 import org.academiadecodigo.simplegraphics.mouse.MouseEvent;
 import org.academiadecodigo.simplegraphics.mouse.MouseEventType;
 import org.academiadecodigo.simplegraphics.mouse.MouseHandler;
 
+
 public class MouseController implements MouseHandler {
 
 
-    public static final double MOUSE_ADJST_X = -15;
-    public static final double MOUSE_ADJST_Y = -10;
-
     private Client client;
 
-    private double XIni;
-    private double YIni;
+    private MouseEvent event;
 
-    private double XFin;
-    private double YFin;
     private int count;
 
     private boolean canDraw;
@@ -34,11 +31,8 @@ public class MouseController implements MouseHandler {
         Mouse mouse = new Mouse(this);
 
         mouse.addEventListener(MouseEventType.MOUSE_PRESSED);
-
         mouse.addEventListener(MouseEventType.MOUSE_RELEASE);
-
         mouse.addEventListener(MouseEventType.MOUSE_DRAGGED);
-
     }
 
 
@@ -55,27 +49,39 @@ public class MouseController implements MouseHandler {
     @Override
     public void mousePressed(MouseEvent mouseEvent) {
 
-        XIni = mouseEvent.getX();
-        YIni = mouseEvent.getY();
+        if (!canDraw){
+            return;
+        }
 
-        System.out.println(mouseEvent);
+        event = mouseEvent;
     }
 
 
     @Override
     public void mouseReleased(MouseEvent mouseEvent) {
 
-        XFin = mouseEvent.getX();
-        YFin = mouseEvent.getY();
+        if(!canDraw){
+            return;
+        }
 
+        sendLine(event, mouseEvent);
+        event = null;
     }
 
     @Override
     public void mouseDragged(MouseEvent mouseEvent) {
 
-        //TODO change this to client class
-
         if (!canDraw) {
+            return;
+        }
+
+        if (!controlBorders(mouseEvent)){
+            event = null;
+            return;
+        }
+
+        if (event == null) {
+            event = mouseEvent;
             return;
         }
 
@@ -84,15 +90,27 @@ public class MouseController implements MouseHandler {
         if (count <= 0 || count % 3 != 0) {
             return;
         }
+        sendLine(event, mouseEvent);
 
-        String str = "/DRAW/ " + String.valueOf(XIni) + " " + String.valueOf(YIni) + " " +
-                String.valueOf(mouseEvent.getX()) + " " + String.valueOf(mouseEvent.getY()) + "\n";
+        event = mouseEvent;
+    }
 
+    private void sendLine(MouseEvent initial, MouseEvent end) {
 
-        client.sendToServer(str);
-        XIni = mouseEvent.getX();
-        YIni = mouseEvent.getY();
+        String lineCoordinates = GameStrings.DRAW + initial.getX() + " " + initial.getY() + " " +
+               end.getX() + " " + end.getY() + "\n";
 
+        client.sendToServer(lineCoordinates);
+    }
+
+    private boolean controlBorders(MouseEvent mouseEvent) {
+
+        if (mouseEvent.getX() < Constants.PADDING || mouseEvent.getX() > Constants.DRAWING_BOARD_X + 10||
+                mouseEvent.getY() < Constants.PADDING || mouseEvent.getY() > Constants.DRAWING_BOARD_Y + 10) {
+
+            return false;
+        }
+        return true;
     }
 
     public void setCanDraw(boolean canDraw) {
