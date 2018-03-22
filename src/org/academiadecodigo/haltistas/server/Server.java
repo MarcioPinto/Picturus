@@ -130,7 +130,6 @@ public class Server {
             }
         }
 
-
         void writeMessage(String message) {
             toClients.println(message);
         }

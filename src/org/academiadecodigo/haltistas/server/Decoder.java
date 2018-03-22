@@ -27,6 +27,7 @@ public class Decoder {
                 message = message.substring(message.indexOf(" ") + 1);
 
                 game.wordCheck(message);
+                game.chatMessage(message);
                 break;
 
             case "/DRAW/":

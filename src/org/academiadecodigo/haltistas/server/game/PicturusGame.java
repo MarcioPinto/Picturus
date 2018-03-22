@@ -1,5 +1,6 @@
 package org.academiadecodigo.haltistas.server.game;
 
+import org.academiadecodigo.haltistas.GameCommand;
 import org.academiadecodigo.haltistas.server.Server;
 
 import java.util.*;
@@ -11,7 +12,8 @@ public class PicturusGame implements Runnable {
     private List<String> playerList;
     private LinkedList<String> waitingQueue;
     private String gameWord;
-    private int minPlayers = 1;
+    private int minPlayers;
+    private Time timer ;
 
 
     public PicturusGame(Server server) {
@@ -19,6 +21,7 @@ public class PicturusGame implements Runnable {
         this.server = server;
         this.playerList = new ArrayList<>();
         this.waitingQueue = new LinkedList<>();
+        this.minPlayers = 3;
     }
 
 
@@ -36,26 +39,24 @@ public class PicturusGame implements Runnable {
                 while (waitingQueue.size() < minPlayers) {
                     try {
 
-                        server.whisper(
-                                waitingQueue.get(
-                                        waitingQueue.size() - 1), Encoder.info("waiting..."));
+                        initMessages();
                         this.wait();
+
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
-
                 while (!waitingQueue.isEmpty()) {
+
                     String name = waitingQueue.poll();
-                    server.whisper(name, Encoder.info("The wait is over..."));
+                    server.whisper(name, Encoder.info(GameCommand.NEW_ROUND));
                     playerList.add(name);
                 }
-
                 server.broadcast(Encoder.info("Starting game!"), playerList); //just to start the game
-
                 notifyAll();
             }
             startingGame();
+
         }
     }
 
@@ -64,17 +65,13 @@ public class PicturusGame implements Runnable {
         wordToDraw();
     }
 
-
     public void drawMessage(String message) {
         server.broadcast(Encoder.draw(message), playerList);
     }
 
-
     public void chatMessage(String message) {
-
-        //wordCheck(message);
-
-        // server.broadcast(Encoder.chat(message), playerList);
+        wordCheck(message);
+        server.broadcast(Encoder.chat(message), playerList);
     }
 
     /**
@@ -99,7 +96,6 @@ public class PicturusGame implements Runnable {
     public void drawingPlayer() {
 
         Collections.shuffle(playerList);
-
         String toSend = Encoder.activePlayer(gameWord);
         server.whisper(playerList.get(0), toSend);
     }
@@ -111,7 +107,20 @@ public class PicturusGame implements Runnable {
     public void wordCheck(String wordGuess) {
 
         if (wordGuess.equals(gameWord)) {
+            server.broadcast(Encoder.reset(), playerList);
             startingGame();
+
         }
+    }
+
+    private void initMessages() {
+        server.whisper(waitingQueue.get(waitingQueue.size() - 1),
+                Encoder.info(GameCommand.NOT_ENOUGH_PLAYERS));
+
+        server.whisper(waitingQueue.get(waitingQueue.size() - 1),
+                Encoder.info(GameCommand.QUIT));
+
+        server.whisper(waitingQueue.get(waitingQueue.size() - 1),
+                Encoder.info(GameCommand.CHANGE_NAME));
     }
 }
