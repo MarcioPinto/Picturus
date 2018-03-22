@@ -8,8 +8,8 @@ import java.util.*;
 public class PicturusGame implements Runnable {
 
 
-    private final static int ROUND_TIME = 5;
-    private final static int WAIT_TIME = 10;
+    private final static int ROUND_TIME = 60;
+    private final static int WAIT_TIME = 5;
 
     private static final int FREQUENCY = 1000;
 
@@ -140,6 +140,8 @@ public class PicturusGame implements Runnable {
             server.broadcast(Encoder.chat(GameCommand.CORRECT_WORD + " : " + gameWord), playerList);
             server.broadcast(Encoder.reset(), playerList);
             roundTime.cancel();
+            endGame();
+            restartGame();
 
         }
     }

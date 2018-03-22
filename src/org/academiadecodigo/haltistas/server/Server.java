@@ -109,7 +109,7 @@ public class Server {
                         continue;
                     }
 
-                    decoder.decoder(message, this);
+                    decoder.decoder(message);
                 }
 
             } catch (IOException e) {
