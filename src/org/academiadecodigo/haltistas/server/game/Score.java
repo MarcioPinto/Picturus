@@ -40,7 +40,7 @@ public class Score {
     }
 
     public String transform(){
-        String safe = " ";
+        String safe = "";
         for (String name : scoreKeeper.keySet()) {
            safe += name + " " + scoreKeeper.get(name) + " ";
         }

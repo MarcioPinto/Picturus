@@ -52,7 +52,7 @@ public class Server {
 
     private String generateName() {
         index++;
-        return "Guest " + index;
+        return "Guest_" + index;
     }
 
     public void broadcast(String message, List<String> names) {

@@ -1,6 +1,7 @@
 package org.academiadecodigo.haltistas.server.game;
 
 import org.academiadecodigo.haltistas.GameStrings;
+import org.academiadecodigo.haltistas.server.GameConstants;
 import org.academiadecodigo.haltistas.server.Server;
 
 import java.util.*;
@@ -171,14 +172,14 @@ public class PicturusGame implements Runnable {
         System.out.println("Checking word");
         if (wordGuess.equals(gameWord)) {
 
-            score.add(name, 100);
-            score.add(playerList.get(randomNumber), 50);
+            score.add(name, GameConstants.SCORE_TO_GUESS);
+            score.add(playerList.get(randomNumber), GameConstants.SCORE_TO_DRAW);
             score.test();
 
             server.broadcast(Encoder.chat(GameStrings.CORRECT_WORD + " : " + gameWord), playerList);
             server.broadcast(Encoder.reset(), playerList);
 
-            server.broadcast(Encoder.score(score.transform()), playerList);
+            server.broadcast(Encoder.info(score.transform()), playerList);
 
             roundTime.cancel();
             endGame();
