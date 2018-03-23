@@ -3,6 +3,7 @@ package org.academiadecodigo.haltistas.client.graphics;
 import org.academiadecodigo.haltistas.GameStrings;
 import org.academiadecodigo.haltistas.client.Client;
 import org.academiadecodigo.haltistas.client.utils.Constants;
+import org.academiadecodigo.simplegraphics.graphics.Color;
 import org.academiadecodigo.simplegraphics.graphics.Text;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,12 +29,11 @@ public class Chat {
         this.messageToSend = "";
 
         this.sendMessage = new Text(Constants.POSX_TEXT, Constants.POSY_TEXT_TO_SEND, messageToSend);
+        this.sendMessage.setColor(Color.WHITE);
         this.sendMessage.draw();
 
         this.history = new LinkedList<>();
-
         this.timesTranslate = 0;
-
         this.canWrite = true;
     }
 
@@ -82,8 +82,8 @@ public class Chat {
 
         Text receivedMessage = new Text(Constants.POSX_TEXT, posyTextToReceive, message);
         history.add(receivedMessage);
+        receivedMessage.setColor(Color.WHITE);
         receivedMessage.draw();
-        System.out.println(timesTranslate);
     }
 
 

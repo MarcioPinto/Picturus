@@ -108,7 +108,7 @@ public class Server {
                         continue;
                     }
 
-                    decoder.decoder(message, this);
+                    decoder.decoder(clientName ,message,this);
                 }
 
             } catch (IOException e) {
