@@ -33,9 +33,7 @@ public class Chat {
         this.sendMessage.draw();
 
         this.history = new LinkedList<>();
-
         this.timesTranslate = 0;
-
         this.canWrite = true;
     }
 

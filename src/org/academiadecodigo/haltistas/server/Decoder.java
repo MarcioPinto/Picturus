@@ -13,7 +13,7 @@ public class Decoder {
     }
 
 
-    public void decoder(String message, Server.ClientHandler socket) {
+    public void decoder(String clientName, String message, Server.ClientHandler socket) {
 
 
         String[] splitedMessage = message.split(" ");
@@ -26,7 +26,7 @@ public class Decoder {
                 message = message.substring(message.indexOf(" ") + 1);
                 String name = socket.getClientName();
                 game.wordCheck(message,name);
-                game.chatMessage(message);
+                game.chatMessage(name +" : " + message);
                 break;
 
             case "/DRAW/":
