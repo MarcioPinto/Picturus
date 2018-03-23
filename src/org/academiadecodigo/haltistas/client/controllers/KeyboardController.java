@@ -1,16 +1,13 @@
 package org.academiadecodigo.haltistas.client.controllers;
 
-import com.sun.org.apache.regexp.internal.RE;
 import org.academiadecodigo.haltistas.client.Client;
 import org.academiadecodigo.simplegraphics.keyboard.Keyboard;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardEvent;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardEventType;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardHandler;
-
 import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 import java.util.List;
-
 
 public class KeyboardController implements KeyboardHandler, Runnable {
 

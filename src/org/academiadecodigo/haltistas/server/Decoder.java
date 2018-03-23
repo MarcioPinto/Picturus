@@ -1,23 +1,20 @@
 package org.academiadecodigo.haltistas.server;
 
+import org.academiadecodigo.haltistas.GameStrings;
 import org.academiadecodigo.haltistas.server.game.PicturusGame;
-
-import java.net.Socket;
 
 
 public class Decoder {
 
     private PicturusGame game;
 
-
-    public Decoder(PicturusGame game) {
+    Decoder(PicturusGame game) {
         this.game = game;
     }
 
 
     public void decoder(String message, Server.ClientHandler socket) {
 
-        // TODO: /DRAW/ /NAME/ MESSAGE
 
         String[] splitedMessage = message.split(" ");
 
@@ -41,7 +38,7 @@ public class Decoder {
                 break;
 
             default:
-                System.err.println("Something went wrong!");
+                System.err.println(GameStrings.ERROR);
         }
     }
 }

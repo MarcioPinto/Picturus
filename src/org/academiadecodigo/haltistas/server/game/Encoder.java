@@ -1,30 +1,31 @@
 package org.academiadecodigo.haltistas.server.game;
 
+import org.academiadecodigo.haltistas.GameStrings;
 
 public class Encoder {
 
     public static String draw(String message){
 
-        return "/DRAW/ " + message;
+        return GameStrings.DRAW + message;
     }
 
     public static String chat(String message){
 
-        return "/CHAT/ " + message;
+        return GameStrings.CHAT + message;
     }
 
     public static String activePlayer(String message){
 
-        return "/ACTIVE/ " + message;
+        return GameStrings.ACTIVE_PLAYER + message;
     }
 
     public static String info(String message){
 
-        return "/INFO/ " + message;
+        return GameStrings.INFO + message;
     }
 
     public static String reset(){
-        return "/RESET/ " ;
+        return GameStrings.RESET ;
     }
 
     public static String score(String message){

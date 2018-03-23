@@ -1,6 +1,6 @@
 package org.academiadecodigo.haltistas.server.game;
 
-import org.academiadecodigo.haltistas.GameCommand;
+import org.academiadecodigo.haltistas.GameStrings;
 import org.academiadecodigo.haltistas.server.Server;
 
 import java.util.*;
@@ -9,7 +9,7 @@ public class PicturusGame implements Runnable {
 
 
     private final static int ROUND_TIME = 60;
-    private final static int WAIT_TIME = 5;
+    private final static int WAIT_TIME = 30;
 
     private static final int FREQUENCY = 1000;
 
@@ -41,24 +41,24 @@ public class PicturusGame implements Runnable {
     public void run() {
 
         while (true) {
-
             fillQueue();
-            System.out.println("preparing the game");
+
             prepareGame();
         }
     }
 
+    /**
+     * Doesn't allow the game to start until there is a minimum number of players
+     * Doesn't allow the game to start if the game had already started
+     */
     private void fillQueue() {
 
         synchronized (this) {
             while (waitingQueue.size() < minPlayers
                     || waitingQueue.isEmpty() || gameIsRunning) {
 
-                System.out.println(gameIsRunning);
                 try {
-                    System.out.println("waking up...");
                     this.wait();
-
                     initMessages();
 
                 } catch (InterruptedException e) {
@@ -68,34 +68,52 @@ public class PicturusGame implements Runnable {
         }
     }
 
+    /**
+     * Retrieves and removes the first player from the waiting queue
+     * Tells all the the players that the game is starting
+     */
     private void prepareGame() {
         synchronized (this) {
             playerOnQueue();
-            server.broadcast(Encoder.info("Starting game!"), playerList);
+            server.broadcast(Encoder.info(GameStrings.START), playerList);
             wordToDraw();
             roundTime = new RoundTimer();
             timer.scheduleAtFixedRate(roundTime, 0, FREQUENCY);
         }
     }
 
+    /**
+     * Assigns a "name" to the players
+     */
     private void playerOnQueue() {
         synchronized (this) {
             while (!waitingQueue.isEmpty()) {
 
                 String name = waitingQueue.poll();
-                server.whisper(name, Encoder.info(GameCommand.NEW_ROUND));
+                server.whisper(name, Encoder.info(GameStrings.NEW_ROUND));
                 playerList.add(name);
                 score.addNameScore(name);
             }
         }
     }
 
-
+    /**
+     * Sends the drawing to all all the players
+     *
+     * @param message
+     */
     public void drawMessage(String message) {
         server.broadcast(Encoder.draw(message), playerList);
     }
 
+    /**
+     * Sends the messages from the players to all the players
+     * Compares the words with the Game Word
+     *
+     * @param message
+     */
     public void chatMessage(String message) {
+        //wordCheck(message);//TODO
         server.broadcast(Encoder.chat(message), playerList);
     }
 
@@ -120,19 +138,21 @@ public class PicturusGame implements Runnable {
         drawingPlayer();
     }
 
-
+    /**
+     * Gets a random player from the list of players
+     * Sends the Game Word to the player
+     */
     public void drawingPlayer() {
-/*
-        Collections.shuffle(playerList);
-        String toSend = Encoder.activePlayer(gameWord);
-        server.whisper(playerList.get(0), toSend);
-         */
+
         randomNumber = (int) Math.floor(Math.random() * playerList.size());
 
         String toSend = Encoder.activePlayer(gameWord);
         server.whisper(playerList.get(randomNumber), toSend);
     }
 
+    /**
+     * Turns gameIsRunning to false
+     */
     private void endGame() {
         synchronized (this) {
             gameIsRunning = false;
@@ -140,62 +160,58 @@ public class PicturusGame implements Runnable {
     }
 
     /**
-     * compares the gameWord with the words sent by the chat with /CHAT/
+     * Compares the Game Word with the words sent by the chat with /CHAT/
+     * If the word is the same, sends a message to the players
+     * Stops the Round Time
+     * Ends the Game
+     * Restarts the Game
      */
     public void wordCheck(String wordGuess, String name) {
 
         System.out.println("Checking word");
         if (wordGuess.equals(gameWord)) {
-            /*int currentScore = score.additionGuess(name);
-            score.changeScore(name, currentScore);
-            score.changeScore(playerList.get(randomNumber), score.additionDrawer(playerList.get(randomNumber)));
-            */
+
             score.add(name, 100);
             score.add(playerList.get(randomNumber), 50);
             score.test();
 
-            server.broadcast(Encoder.chat(GameCommand.CORRECT_WORD + " : " + gameWord), playerList);
+            server.broadcast(Encoder.chat(GameStrings.CORRECT_WORD + " : " + gameWord), playerList);
             server.broadcast(Encoder.reset(), playerList);
 
-            server.broadcast(Encoder.score(score.transform()),playerList);
+            server.broadcast(Encoder.score(score.transform()), playerList);
 
-            //metodo para transformar int em String.
-            //TODO  --> 0 0 0
-            //separar por espaços para enviar
-
-            //server.broadcast(Encoder.score(),playerList);
             roundTime.cancel();
             endGame();
             restartGame();
 
         }
-/*
-        if (wordGuess.equals(gameWord)) {
 
-            server.broadcast(Encoder.chat(GameCommand.CORRECT_WORD + " : " + gameWord), playerList);
-            server.broadcast(Encoder.reset(), playerList);
-            //Encoder.score()
-            roundTime.cancel();
-            endGame();
-            restartGame();
-        }
-        */
     }
 
+    /**
+     * Tells the players that there's not enough players for the game to start
+     */
     private void initMessages() {
+
         server.whisper(waitingQueue.get(waitingQueue.size() - 1),
-                Encoder.info(GameCommand.NOT_ENOUGH_PLAYERS));
+                Encoder.info(GameStrings.NOT_ENOUGH_PLAYERS));
     }
 
+    /**
+     * Restarts the Game
+     * Adds all the waiting players
+     */
     private void restartGame() {
         synchronized (this) {
             waitingQueue.addAll(playerList);
             playerList.clear();
-            notifyAll();
-            System.out.println("in here");
+            PicturusGame.this.notifyAll();
         }
     }
 
+    /**
+     * Timer for the Rounds
+     */
     public class RoundTimer extends TimerTask {
 
         private int seconds = ROUND_TIME;
@@ -211,29 +227,31 @@ public class PicturusGame implements Runnable {
             System.out.println(seconds);
 
             if (seconds < 0) {
-                System.out.println("canceling");
                 this.cancel();
+                server.broadcast(Encoder.chat(GameStrings.NO_RIGHT_ANSWER), playerList);
                 endGame();
                 timer.scheduleAtFixedRate(new WaitingTimer(), 0, FREQUENCY);
             }
         }
     }
 
+    /**
+     * Timer for the time between the end of a round and the start of another round
+     */
     private class WaitingTimer extends TimerTask {
 
         private int seconds = WAIT_TIME;
 
         @Override
         public void run() {
-
             seconds--;
             System.out.println(seconds);
 
             if (seconds < 0) {
-                System.out.println("canceling");
                 this.cancel();
                 restartGame();
             }
         }
     }
 }
+
