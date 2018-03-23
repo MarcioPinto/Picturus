@@ -1,6 +1,5 @@
 package org.academiadecodigo.haltistas.server;
 
-import org.academiadecodigo.haltistas.GameStrings;
 import org.academiadecodigo.haltistas.server.game.PicturusGame;
 
 import java.io.BufferedReader;

@@ -1,6 +1,6 @@
 package org.academiadecodigo.haltistas.client.utils;
 
-import org.academiadecodigo.haltistas.GameStrings;
+import org.academiadecodigo.haltistas.server.GameStrings;
 import org.academiadecodigo.haltistas.client.Client;
 import org.academiadecodigo.haltistas.client.controllers.MouseController;
 import org.academiadecodigo.haltistas.client.graphics.Chat;

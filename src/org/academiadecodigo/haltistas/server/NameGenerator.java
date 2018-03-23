@@ -1,6 +1,5 @@
 package org.academiadecodigo.haltistas.server;
 
-import org.academiadecodigo.haltistas.GameStrings;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;

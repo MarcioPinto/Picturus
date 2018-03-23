@@ -1,4 +1,4 @@
-package org.academiadecodigo.haltistas;
+package org.academiadecodigo.haltistas.server;
 
 public class GameStrings {
 

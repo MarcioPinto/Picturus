@@ -1,6 +1,6 @@
 package org.academiadecodigo.haltistas.server.game;
 
-import org.academiadecodigo.haltistas.GameStrings;
+import org.academiadecodigo.haltistas.server.GameStrings;
 import org.academiadecodigo.haltistas.server.GameConstants;
 import org.academiadecodigo.haltistas.server.Server;
 
@@ -10,7 +10,7 @@ public class PicturusGame implements Runnable {
 
 
     private final static int ROUND_TIME = 60;
-    private final static int WAIT_TIME = 30;
+    private final static int WAIT_TIME = 15;
 
     private static final int FREQUENCY = 1000;
 
@@ -55,7 +55,7 @@ public class PicturusGame implements Runnable {
 
         synchronized (this) {
             while (waitingQueue.size() < minPlayers
-                    || waitingQueue.isEmpty() || gameIsRunning) {
+                    || gameIsRunning) {
 
                 try {
                     this.wait();
@@ -92,13 +92,11 @@ public class PicturusGame implements Runnable {
                 String name = waitingQueue.poll();
                 server.whisper(name, Encoder.info(GameStrings.NEW_ROUND));
                 playerList.add(name);
-                score.addNameScore(name);
             }
         }
     }
 
     public void removePlayer(String name) {
-        System.out.println("Before ");
         playerList.remove(name);
         score.removePlayer(name);
         waitingQueue.remove(name);
@@ -180,21 +178,17 @@ public class PicturusGame implements Runnable {
      */
     public void wordCheck(String wordGuess, String name) {
 
-        System.out.println("Checking word");
         if (wordGuess.equals(gameWord)) {
 
             score.add(name, GameConstants.SCORE_TO_GUESS);
             score.add(playerList.get(randomNumber), GameConstants.SCORE_TO_DRAW);
-            score.test();
 
             server.broadcast(Encoder.chat(GameStrings.CORRECT_WORD + " : " + gameWord), playerList);
             server.broadcast(Encoder.reset(), playerList);
 
             server.broadcast(Encoder.info(score.transform()), playerList);
 
-            roundTime.cancel();
-            endGame();
-            restartGame();
+            roundTime.stop();
 
         }
 
@@ -217,7 +211,7 @@ public class PicturusGame implements Runnable {
         synchronized (this) {
             waitingQueue.addAll(playerList);
             playerList.clear();
-            PicturusGame.this.notifyAll();
+            this.notifyAll();
         }
     }
 
@@ -236,14 +230,17 @@ public class PicturusGame implements Runnable {
             }
 
             seconds--;
-            System.out.println(seconds);
 
             if (seconds < 0) {
-                this.cancel();
                 server.broadcast(Encoder.chat(GameStrings.NO_RIGHT_ANSWER), playerList);
-                endGame();
-                timer.scheduleAtFixedRate(new WaitingTimer(), 0, FREQUENCY);
+                stop();
             }
+        }
+
+        public void stop() {
+            this.cancel();
+            endGame();
+            timer.scheduleAtFixedRate(new WaitingTimer(), 0, FREQUENCY);
         }
     }
 
@@ -256,8 +253,8 @@ public class PicturusGame implements Runnable {
 
         @Override
         public void run() {
+
             seconds--;
-            System.out.println(seconds);
 
             if (seconds < 0) {
                 this.cancel();

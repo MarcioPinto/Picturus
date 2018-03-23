@@ -1,6 +1,6 @@
 package org.academiadecodigo.haltistas.client;
 
-import org.academiadecodigo.haltistas.GameStrings;
+import org.academiadecodigo.haltistas.server.GameStrings;
 import org.academiadecodigo.haltistas.client.controllers.KeyboardController;
 import org.academiadecodigo.haltistas.client.controllers.MouseController;
 import org.academiadecodigo.haltistas.client.utils.Constants;
@@ -13,8 +13,14 @@ public class ClientLauncher {
 
     public static void main(String[] args) {
 
-        String hostName = "localhost";
-        int portNumber = 55555;
+
+        if (args.length != 2) {
+            System.out.println("Usage: java -jar ClientLauncher <hostName> <PortNumber>");
+            return;
+        }
+
+        String hostName = args[0];
+        int portNumber = Integer.parseInt(args[1]);
 
         Picture picture = new Picture(Constants.PADDING,Constants.PADDING,"resources/canvas.png");
         picture.draw();
