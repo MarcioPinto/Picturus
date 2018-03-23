@@ -46,9 +46,16 @@ public class KeyboardController implements KeyboardHandler, Runnable {
 
     @Override
     public void keyPressed(char c) {
+
+        if (c == KeyEvent.VK_ESCAPE) {
+            client.sendToEraseAll();
+            return;
+        }
+
         if (prohibitedChar.contains(c)) {
             return;
         }
+
         client.drawToSend(c);
     }
 

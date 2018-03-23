@@ -37,6 +37,11 @@ public class Decoder {
                 game.drawMessage(message);
                 break;
 
+            case "/ERASE/":
+
+                game.eraseDraw(message);
+                break;
+
             default:
                 System.err.println(GameStrings.ERROR);
         }

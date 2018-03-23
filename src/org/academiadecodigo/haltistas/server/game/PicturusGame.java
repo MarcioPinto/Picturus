@@ -43,7 +43,6 @@ public class PicturusGame implements Runnable {
 
         while (true) {
             fillQueue();
-
             prepareGame();
         }
     }
@@ -96,6 +95,11 @@ public class PicturusGame implements Runnable {
                 score.addNameScore(name);
             }
         }
+    }
+
+
+    public void eraseDraw(String message) {
+        server.broadcast(message, playerList);
     }
 
     /**

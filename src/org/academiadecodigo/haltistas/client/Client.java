@@ -106,16 +106,15 @@ public class Client {
 
     }
 
-    public Chat getChat() {
-        return chat;
+    public void eraseDraw() {
+        pencil.deleteAll();
     }
 
-    public Pencil getPencil() {
-        return pencil;
-    }
-
-    public MouseController getMouseController() {
-        return mouseController;
+    public void sendToEraseAll() {
+        if (chat.isCanWrite()) {
+            return;
+        }
+        sendToServer("/ERASE/");
     }
 
     private class InputHandler implements Runnable {
