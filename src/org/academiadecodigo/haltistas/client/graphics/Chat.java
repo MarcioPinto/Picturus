@@ -1,9 +1,9 @@
 package org.academiadecodigo.haltistas.client.graphics;
 
+import org.academiadecodigo.haltistas.GameStrings;
 import org.academiadecodigo.haltistas.client.Client;
 import org.academiadecodigo.haltistas.client.utils.Constants;
 import org.academiadecodigo.simplegraphics.graphics.Text;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -58,7 +58,7 @@ public class Chat {
             return;
         }
 
-        String finalMessage = "/CHAT/ " + messageToSend;
+        String finalMessage = GameStrings.CHAT + messageToSend;
         client.sendToServer(finalMessage);
         messageToSend = "";
         sendMessage.setText(messageToSend);

@@ -1,5 +1,6 @@
 package org.academiadecodigo.haltistas.server;
 
+import org.academiadecodigo.haltistas.GameStrings;
 import org.academiadecodigo.haltistas.server.game.PicturusGame;
 
 import java.io.BufferedReader;
@@ -37,19 +38,13 @@ public class Server {
 
         while (true) {
 
-            System.out.println("New client is connecting: ");
             Socket clientSocket = serverSocket.accept();
-            System.out.println(clientSocket);
-
             String clientName = generateName();
 
             ClientHandler handler = new ClientHandler(clientSocket, clientName);
-
-
             clientList.put(clientName, handler);
-            System.out.println("The size of the map is: " + clientList.size());
-            service.submit(handler);
 
+            service.submit(handler);
             game.addPlayer(clientName);
         }
     }
@@ -109,11 +104,11 @@ public class Server {
                         continue;
                     }
 
-                    decoder.decoder(message);
+                    decoder.decoder(message,this);
                 }
 
             } catch (IOException e) {
-                e.printStackTrace();
+                System.err.println(GameStrings.ERROR);
 
             } finally {
                 stop();
@@ -124,12 +119,11 @@ public class Server {
         void stop() {
 
             try {
-
                 clientList.remove(this);
                 connection.close();
 
             } catch (IOException e) {
-                e.printStackTrace();
+                System.err.println(GameStrings.ERROR);
             }
         }
 

@@ -7,7 +7,6 @@ import org.academiadecodigo.haltistas.client.utils.Constants;
 import org.academiadecodigo.haltistas.client.utils.Receive;
 import org.academiadecodigo.simplegraphics.graphics.Line;
 import org.academiadecodigo.simplegraphics.graphics.Rectangle;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -87,7 +86,6 @@ public class Client {
         chat.delete();
     }
 
-
     public void drawSend() {
         chat.send();
     }
@@ -101,8 +99,7 @@ public class Client {
         }
     }
 
-    public void reset() {
-
+    public  void reset() {
         mouseController.setCanDraw(false);
         chat.setCanWrite(true);
         pencil.deleteAll();

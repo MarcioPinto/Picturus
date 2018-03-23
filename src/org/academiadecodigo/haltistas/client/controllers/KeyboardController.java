@@ -5,11 +5,9 @@ import org.academiadecodigo.simplegraphics.keyboard.Keyboard;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardEvent;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardEventType;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardHandler;
-
 import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 import java.util.List;
-
 
 public class KeyboardController implements KeyboardHandler, Runnable {
 

@@ -1,14 +1,15 @@
 package org.academiadecodigo.haltistas.server.game;
 
+import org.academiadecodigo.haltistas.GameStrings;
+
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
 public class GameWords {
 
-    private static final String PATH = "resources/gameWords.txt";
+    private static final String PATH = GameStrings.WORD_LIST;
 
     public GameWords() {
     }
@@ -27,7 +28,7 @@ public class GameWords {
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println(GameStrings.ERROR);
         }
 
         Collections.shuffle(listWord);

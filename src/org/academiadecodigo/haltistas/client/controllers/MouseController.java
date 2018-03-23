@@ -1,5 +1,6 @@
 package org.academiadecodigo.haltistas.client.controllers;
 
+import org.academiadecodigo.haltistas.GameStrings;
 import org.academiadecodigo.haltistas.client.Client;
 import org.academiadecodigo.haltistas.client.utils.Constants;
 import org.academiadecodigo.simplegraphics.mouse.Mouse;
@@ -96,7 +97,7 @@ public class MouseController implements MouseHandler {
 
     private void sendLine(MouseEvent initial, MouseEvent end) {
 
-        String lineCoordinates = "/DRAW/ " + initial.getX() + " " + initial.getY() + " " +
+        String lineCoordinates = GameStrings.DRAW + initial.getX() + " " + initial.getY() + " " +
                end.getX() + " " + end.getY() + "\n";
 
         client.sendToServer(lineCoordinates);
