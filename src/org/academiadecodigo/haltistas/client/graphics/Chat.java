@@ -86,7 +86,6 @@ public class Chat {
         history.add(receivedMessage);
         receivedMessage.setColor(Color.WHITE);
         receivedMessage.draw();
-        System.out.println(timesTranslate);
     }
 
 

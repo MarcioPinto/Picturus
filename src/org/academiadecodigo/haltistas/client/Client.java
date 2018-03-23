@@ -8,8 +8,6 @@ import org.academiadecodigo.haltistas.client.utils.Receive;
 import org.academiadecodigo.simplegraphics.graphics.Color;
 import org.academiadecodigo.simplegraphics.graphics.Line;
 import org.academiadecodigo.simplegraphics.graphics.Rectangle;
-import org.academiadecodigo.simplegraphics.pictures.Picture;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -50,12 +48,10 @@ public class Client {
     public void init() throws IOException {
 
         canvasInit();
-
         socket = new Socket(hostName, portNumber);
 
         toServer = new PrintWriter(socket.getOutputStream(), true);
         fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
         new Thread(new InputHandler(this)).start();
     }
 
