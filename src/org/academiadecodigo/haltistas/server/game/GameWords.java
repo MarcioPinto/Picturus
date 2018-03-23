@@ -2,9 +2,7 @@ package org.academiadecodigo.haltistas.server.game;
 
 import org.academiadecodigo.haltistas.server.GameStrings;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 public class GameWords {
@@ -18,8 +16,11 @@ public class GameWords {
         List<String> listWord = new ArrayList<>();
 
         try {
-            FileReader reader = new FileReader(PATH);
-            BufferedReader bufferedReader = new BufferedReader(reader);
+
+
+
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(
+                    Thread.currentThread().getContextClassLoader().getResourceAsStream(PATH)));
 
             String line ;
 
@@ -32,7 +33,6 @@ public class GameWords {
         }
 
         Collections.shuffle(listWord);
-        System.out.println(listWord.get(0));
         return listWord.get(0);
     }
 

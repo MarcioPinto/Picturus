@@ -3,6 +3,7 @@ package org.academiadecodigo.haltistas.server;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -17,8 +18,10 @@ public class NameGenerator {
         List<String> name = new ArrayList<>();
 
         try {
-            FileReader reader = new FileReader(GameStrings.NAME_GENERATOR);
-            BufferedReader bufferedReader = new BufferedReader(reader);
+
+            BufferedReader bufferedReader = new BufferedReader(
+                    new InputStreamReader(Thread.currentThread().getContextClassLoader().
+                            getResourceAsStream(GameStrings.NAME_GENERATOR)));
 
             String line ;
 
@@ -31,7 +34,6 @@ public class NameGenerator {
         }
 
         Collections.shuffle(name);
-        System.out.println(name.get(0));
         return name.get(0);
     }
 }
