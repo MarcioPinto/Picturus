@@ -17,8 +17,8 @@ public class Pencil {
 
 
         Line line = new Line(iniX, iniY, finX, finY);
+        line.setColor(Color.WHITE);
         line.draw();
-        line.setColor(Color.BLUE);
 
         lines.add(line);
     }
