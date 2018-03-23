@@ -109,25 +109,14 @@ public class Client {
 
     }
 
-    public Chat getChat() {
-        return chat;
-    }
-
-    public Pencil getPencil() {
-        return pencil;
-    }
-
-    public MouseController getMouseController() {
-        return mouseController;
-    }
-
     public void eraseDraw() {
+        pencil.deleteAll();
+    }
 
-        if (!mouseController.isCanDraw()) {
+    public void sendToEraseAll() {
+        if (chat.isCanWrite()) {
             return;
         }
-
-        pencil.deleteAll();
         sendToServer("/ERASE/");
     }
 

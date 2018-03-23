@@ -1,7 +1,5 @@
 package org.academiadecodigo.haltistas.client.graphics;
 
-import org.academiadecodigo.haltistas.client.controllers.MouseController;
-import org.academiadecodigo.haltistas.client.utils.Constants;
 import org.academiadecodigo.simplegraphics.graphics.Color;
 import org.academiadecodigo.simplegraphics.graphics.Line;
 

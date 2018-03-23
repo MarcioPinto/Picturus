@@ -1,6 +1,5 @@
 package org.academiadecodigo.haltistas.client.controllers;
 
-import com.sun.org.apache.regexp.internal.RE;
 import org.academiadecodigo.haltistas.client.Client;
 import org.academiadecodigo.simplegraphics.keyboard.Keyboard;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardEvent;
@@ -51,7 +50,7 @@ public class KeyboardController implements KeyboardHandler, Runnable {
     public void keyPressed(char c) {
 
         if (c == KeyEvent.VK_ESCAPE) {
-            client.eraseDraw();
+            client.sendToEraseAll();
             return;
         }
 

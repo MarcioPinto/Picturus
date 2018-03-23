@@ -54,6 +54,10 @@ public class Chat {
 
     public void send() {
 
+        if (messageToSend.equals("")) {
+            return;
+        }
+
         String finalMessage = "/CHAT/ " + messageToSend;
         client.sendToServer(finalMessage);
         messageToSend = "";
@@ -94,5 +98,9 @@ public class Chat {
 
     public void setCanWrite(boolean canWrite) {
         this.canWrite = canWrite;
+    }
+
+    public boolean isCanWrite() {
+        return canWrite;
     }
 }

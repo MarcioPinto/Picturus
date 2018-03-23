@@ -116,7 +116,4 @@ public class MouseController implements MouseHandler {
         this.canDraw = canDraw;
     }
 
-    public boolean isCanDraw() {
-        return canDraw;
-    }
 }
