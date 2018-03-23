@@ -105,8 +105,8 @@ public class MouseController implements MouseHandler {
 
     private boolean controlBorders(MouseEvent mouseEvent) {
 
-        if (mouseEvent.getX() < Constants.PADDING || mouseEvent.getX() > Constants.BORDER_RIGHT||
-                mouseEvent.getY() < Constants.PADDING || mouseEvent.getY() > Constants.BORDER_DOWN) {
+        if (mouseEvent.getX() < Constants.BORDER_LEFT || mouseEvent.getX() > Constants.BORDER_RIGHT||
+                mouseEvent.getY() < Constants.BORDER_UP || mouseEvent.getY() > Constants.BORDER_DOWN) {
 
             return false;
         }

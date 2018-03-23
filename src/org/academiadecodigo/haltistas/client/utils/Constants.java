@@ -18,8 +18,10 @@ public class Constants {
     public final static int CHAT_LINE_FIN_X = 910;
     public final static int CHAT_LINE_FIN_Y = 400;
 
-    public final static int BORDER_DOWN = DRAWING_BOARD_Y + 10;
-    public final static int BORDER_RIGHT = DRAWING_BOARD_X + 10;
+    public static final int BORDER_UP = 35;
+    public static final int BORDER_LEFT = 35;
+    public final static int BORDER_DOWN = DRAWING_BOARD_Y ;
+    public final static int BORDER_RIGHT = DRAWING_BOARD_X + PADDING;
 
     public final static int CHAT_CHAR_LIMIT = 55;
     public final static int CANVAS_CHAT_LIMIT = 19;
