@@ -17,8 +17,8 @@ public class GameStrings {
 
     public static final String ERROR = "Error! Something went wrong!";
     public static final String CONNECTION_ERROR = "Error while connecting! Wrong IP/Port!";
-    public static final String WORD_LIST = "gameWords.txt";
-    public static final String NAME_GENERATOR = "PlayerNames.txt";
+    public static final String WORD_LIST = "resources/gameWords.txt";
+    public static final String NAME_GENERATOR = "resources/PlayerNames.txt";
     public static final String NO_RIGHT_ANSWER = "NOBODY GUESSED THE CORRECT WORD!";
 
 }

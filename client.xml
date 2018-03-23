@@ -4,9 +4,9 @@
 
     <!-- Initialize build properties  -->
     <target name="init" description="Initializes properties">
-        <property name="project.name" value="Picturus" />
+        <property name="project.name" value="PicturusClient" />
         <property name="src.dir" value="src" />
-        <property name="main.class" value="org.academiadecodigo.haltistas.server.ServerLauncher" />
+        <property name="main.class" value="org.academiadecodigo.haltistas.client.ClientLauncher" />
         <property name="build.dir" value="build" />
         <property name="classes.dir" value="${build.dir}/classes" />
         <property name="lib.dir" value="lib" />
