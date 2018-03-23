@@ -2,6 +2,7 @@ package org.academiadecodigo.haltistas.server.game;
 
 import org.academiadecodigo.haltistas.GameStrings;
 
+
 public class Encoder {
 
     public static String draw(String message) {
@@ -11,7 +12,7 @@ public class Encoder {
 
     public static String chat(String message) {
 
-        return GameStrings.CHAT + message;
+        return GameStrings.CHAT + message + "\n";
     }
 
     public static String activePlayer(String message) {
@@ -21,7 +22,7 @@ public class Encoder {
 
     public static String info(String message) {
 
-        return GameStrings.INFO + message;
+        return GameStrings.INFO + message + "\n";
     }
 
     public static String reset(){

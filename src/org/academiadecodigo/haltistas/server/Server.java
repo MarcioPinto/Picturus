@@ -21,6 +21,8 @@ public class Server {
     private Map<String, ClientHandler> clientList;
     private final PicturusGame game;
     private int index;
+    private String clientName;
+
 
 
     public Server(int port) throws IOException {
@@ -39,7 +41,7 @@ public class Server {
         while (true) {
 
             Socket clientSocket = serverSocket.accept();
-            String clientName = generateName();
+            clientName = generateName();
 
             ClientHandler handler = new ClientHandler(clientSocket, clientName);
             clientList.put(clientName, handler);
@@ -51,8 +53,8 @@ public class Server {
 
 
     private String generateName() {
-        index++;
-        return "Guest_" + index;
+
+        return NameGenerator.getName();
     }
 
     public void broadcast(String message, List<String> names) {

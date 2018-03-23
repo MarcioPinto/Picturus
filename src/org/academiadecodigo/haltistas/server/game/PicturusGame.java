@@ -118,7 +118,6 @@ public class PicturusGame implements Runnable {
      * @param message
      */
     public void chatMessage(String message) {
-        //wordCheck(message);//TODO
         server.broadcast(Encoder.chat(message), playerList);
     }
 

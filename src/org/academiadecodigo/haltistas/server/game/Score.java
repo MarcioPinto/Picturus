@@ -24,6 +24,7 @@ public class Score {
     public void test() {
         for (String name : scoreKeeper.keySet()) {
             System.out.println(name + " " + scoreKeeper.get(name));
+
         }
     }
 
