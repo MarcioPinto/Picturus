@@ -2,6 +2,7 @@ package org.academiadecodigo.haltistas.server;
 
 import org.academiadecodigo.haltistas.GameStrings;
 import org.academiadecodigo.haltistas.server.game.PicturusGame;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -21,7 +22,6 @@ public class Server {
     private final PicturusGame game;
     private int index;
     private String clientName;
-
 
 
     public Server(int port) throws IOException {
@@ -101,11 +101,14 @@ public class Server {
 
                     String message = fromClients.readLine();
 
-                    if (message == null || message.isEmpty()) {
+                    if (message == null) {
+                        break;
+                    }
+                    if (message.isEmpty()) {
                         continue;
                     }
 
-                    decoder.decoder(message,this);
+                    decoder.decoder(message, this);
                 }
 
             } catch (IOException e) {
