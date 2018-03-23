@@ -123,7 +123,8 @@ public class Server {
         void stop() {
 
             try {
-                clientList.remove(this);
+                clientList.remove(this.clientName);
+                game.removePlayer(this.clientName);
                 connection.close();
 
             } catch (IOException e) {

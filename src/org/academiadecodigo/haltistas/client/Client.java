@@ -7,6 +7,7 @@ import org.academiadecodigo.haltistas.client.utils.Constants;
 import org.academiadecodigo.haltistas.client.utils.Receive;
 import org.academiadecodigo.simplegraphics.graphics.Line;
 import org.academiadecodigo.simplegraphics.graphics.Rectangle;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -99,7 +100,7 @@ public class Client {
         }
     }
 
-    public  void reset() {
+    public void reset() {
         mouseController.setCanDraw(false);
         chat.setCanWrite(true);
         pencil.deleteAll();
@@ -128,9 +129,10 @@ public class Client {
         @Override
         public void run() {
 
-            while (!socket.isClosed()) {
+            try {
 
-                try {
+                while (socket.isConnected()) {
+
 
                     String message = fromServer.readLine();
 
@@ -144,9 +146,12 @@ public class Client {
 
                     Receive.receivedFromServer(message, pencil, chat, mouseController, client);
 
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                closeSocket();
             }
         }
     }

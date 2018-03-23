@@ -1,10 +1,12 @@
 package org.academiadecodigo.haltistas.server.game;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class Score {
 
-    LinkedHashMap<String, Integer> scoreKeeper = new LinkedHashMap<>();
+    HashMap<String, Integer> scoreKeeper = new HashMap<>();
 
     public void addNameScore(String name) {
         //scoreKeeper.put(name, 0);
@@ -47,5 +49,9 @@ public class Score {
         }
         System.out.println(safe);
         return safe;
+    }
+
+    public void removePlayer(String name) {
+        scoreKeeper.remove(name);
     }
 }

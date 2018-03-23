@@ -97,6 +97,14 @@ public class PicturusGame implements Runnable {
         }
     }
 
+    public void removePlayer(String name) {
+        System.out.println("Before ");
+        playerList.remove(name);
+        score.removePlayer(name);
+        waitingQueue.remove(name);
+
+    }
+
 
     public void eraseDraw(String message) {
         server.broadcast(message, playerList);
